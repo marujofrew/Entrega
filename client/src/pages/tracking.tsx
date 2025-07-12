@@ -89,6 +89,7 @@ export default function TrackingPage() {
         <PromotionalBanner />
       </main>
       
+      {/* Footer with full width */}
       <Footer />
     </div>
   );
