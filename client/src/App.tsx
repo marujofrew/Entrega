@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import TrackingPage from "@/pages/tracking";
+import MobileOnly from "@/components/MobileOnly";
 
 function Router() {
   return (
@@ -21,7 +22,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
+        <MobileOnly>
+          <Router />
+        </MobileOnly>
       </TooltipProvider>
     </QueryClientProvider>
   );

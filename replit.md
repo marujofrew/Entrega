@@ -6,6 +6,7 @@ This is a full-stack web application that mimics a Correios (Brazilian postal se
 
 Preferred communication style: Simple, everyday language.
 Design Requirements: Visual replica exactly identical to original Correios website with professional quality.
+Security Requirements: Mobile-only access - desktop users must be redirected to official Correios website.
 
 ## System Architecture
 
@@ -32,6 +33,7 @@ Design Requirements: Visual replica exactly identical to original Correios websi
 2. **Type Safety**: Full TypeScript implementation across frontend and backend with shared schema definitions
 3. **Component Architecture**: shadcn/ui for consistent, accessible UI components with Tailwind CSS for styling
 4. **Database Strategy**: Drizzle ORM chosen for type-safe database operations with PostgreSQL for production reliability
+5. **Security Architecture**: Mobile-only access control with dual-layer detection (frontend + backend middleware) and automatic redirection to official Correios site for desktop users
 
 ## Key Components
 
