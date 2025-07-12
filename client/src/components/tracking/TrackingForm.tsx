@@ -7,44 +7,47 @@ export default function TrackingForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!trackingCode.trim()) {
       alert("Por favor, digite o código de rastreamento ou CPF/CNPJ");
       return;
     }
-    
+
     console.log("Submitting tracking request:", { trackingCode });
   };
 
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold text-gray-800">Rastreamento</h3>
+        <h3 className="text-xl font-bold text-gray-600">Rastreamento</h3>
       </div>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="bg-gray-100 rounded-lg p-6">
           {/* Tracking Input Section */}
           <div className="mb-6">
             <div className="mb-4">
-              <label htmlFor="objeto" className="block text-sm text-gray-700 mb-3">
-                Deseja acompanhar seu objeto?<br />
-                Digite seu CPF/CNPJ <strong>ou</strong> código* de rastreamento.
+              <label
+                htmlFor="objeto"
+                className="block text-sm text-gray-700 mb-3"
+              >
+                Deseja acompanhar seu objeto?
+                <br />
+                Digite seu CPF para continuar o rastreamento.
               </label>
               <Input
                 id="objeto"
                 name="objeto"
                 type="text"
-                placeholder="AA123456785BR"
+                placeholder="000.000.000-00"
                 value={trackingCode}
                 onChange={(e) => setTrackingCode(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
                 required
               />
             </div>
-            <div className="text-xs text-gray-600 mb-4">* limite de 20 objetos</div>
           </div>
-          
+
           {/* Submit Button */}
           <div className="mt-6">
             <Button
