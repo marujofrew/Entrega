@@ -5,6 +5,30 @@ import { Input } from "@/components/ui/input";
 export default function TrackingForm() {
   const [trackingCode, setTrackingCode] = useState("");
 
+  const formatCPF = (value: string) => {
+    // Remove todos os caracteres não numéricos
+    const numbers = value.replace(/\D/g, "");
+    
+    // Limita a 11 dígitos
+    const limitedNumbers = numbers.slice(0, 11);
+    
+    // Aplica a formatação XXX.XXX.XXX-XX
+    if (limitedNumbers.length <= 3) {
+      return limitedNumbers;
+    } else if (limitedNumbers.length <= 6) {
+      return `${limitedNumbers.slice(0, 3)}.${limitedNumbers.slice(3)}`;
+    } else if (limitedNumbers.length <= 9) {
+      return `${limitedNumbers.slice(0, 3)}.${limitedNumbers.slice(3, 6)}.${limitedNumbers.slice(6)}`;
+    } else {
+      return `${limitedNumbers.slice(0, 3)}.${limitedNumbers.slice(3, 6)}.${limitedNumbers.slice(6, 9)}-${limitedNumbers.slice(9)}`;
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatCPF(e.target.value);
+    setTrackingCode(formattedValue);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -41,7 +65,7 @@ export default function TrackingForm() {
                 type="text"
                 placeholder="000.000.000-00"
                 value={trackingCode}
-                onChange={(e) => setTrackingCode(e.target.value)}
+                onChange={handleInputChange}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
                 required
               />
