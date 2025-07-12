@@ -1,4 +1,5 @@
 import { Menu, Search, User } from "lucide-react";
+import correiosLogoPath from "@assets/CorreiosLogo_1752357067907.png";
 
 interface HeaderProps {
   menuOpen: boolean;
@@ -14,33 +15,35 @@ export default function Header({
   setAccessibilityOpen 
 }: HeaderProps) {
   return (
-    <header className="bg-blue-900 text-white relative">
+    <header className="bg-blue-900 text-white relative" style={{ backgroundColor: '#1B4F72' }}>
       <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center px-4 py-3" style={{ minHeight: '60px' }}>
           {/* Hamburger Menu */}
           <button 
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-white hover:text-gray-200 transition-colors p-1"
+            className="text-white hover:text-gray-200 transition-colors mr-4"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-6 h-6" />
           </button>
           
-          {/* Logo Correios */}
-          <div className="flex items-center">
-            <div className="bg-yellow-400 rounded-sm p-1 mr-2">
-              <div className="w-4 h-3 bg-blue-900 rounded-sm flex items-center justify-center">
-                <div className="w-1 h-1 bg-yellow-400 rounded-full"></div>
-              </div>
-            </div>
-            <span className="font-bold text-lg">Correios</span>
+          {/* Logo Correios - Centered */}
+          <div className="flex-1 flex justify-center">
+            <a href="https://www.correios.com.br" className="flex items-center">
+              <img 
+                src={correiosLogoPath} 
+                alt="Correios" 
+                className="h-7 w-auto"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
+            </a>
           </div>
           
           {/* Right side icons */}
-          <div className="flex items-center space-x-3">
-            <button className="text-white hover:text-gray-200 transition-colors p-1">
+          <div className="flex items-center space-x-3 ml-4">
+            <button className="text-white hover:text-gray-200 transition-colors">
               <Search className="w-5 h-5" />
             </button>
-            <button className="text-white hover:text-gray-200 transition-colors p-1">
+            <button className="text-white hover:text-gray-200 transition-colors">
               <User className="w-5 h-5" />
             </button>
           </div>

@@ -5,6 +5,7 @@ This is a full-stack web application that mimics a Correios (Brazilian postal se
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Design Requirements: Visual replica exactly identical to original Correios website with professional quality.
 
 ## System Architecture
 
