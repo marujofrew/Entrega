@@ -15,14 +15,14 @@ export default function Header({
   setAccessibilityOpen 
 }: HeaderProps) {
   return (
-    <section id="menu" className="bg-blue-900 text-white relative" style={{ backgroundColor: '#1B4F72' }}>
+    <section id="menu" className="bg-gray-100 relative">
       <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-between px-4 py-4">
+        <div className="flex items-center px-4 py-3 bg-gray-100">
           {/* Hamburger Menu */}
           <button 
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-white hover:text-gray-200 transition-colors hamburger"
-            style={{ background: 'none', border: 'none', padding: '8px' }}
+            className="hamburger text-blue-600 hover:text-blue-700 transition-colors mr-4"
+            style={{ background: 'none', border: 'none', padding: '4px' }}
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -34,26 +34,17 @@ export default function Header({
                 src={correiosLogoPath} 
                 alt="Correios" 
                 className="h-8 w-auto"
-                style={{ filter: 'brightness(0) invert(1)' }}
               />
             </a>
           </div>
           
-          {/* Right side - Entry button */}
-          <div className="flex items-center">
-            <a 
-              href="#" 
-              className="entrar text-white hover:text-gray-200 transition-colors text-sm"
-              style={{ textDecoration: 'none' }}
-            >
-              Entrar
-            </a>
-          </div>
+          {/* Right side placeholder for spacing */}
+          <div className="w-10"></div>
         </div>
 
         {/* Menu dropdown */}
         {menuOpen && (
-          <div className="menu absolute top-full left-0 right-0 bg-blue-900 border-t border-blue-800 z-20">
+          <div className="menu absolute top-full left-0 right-0 bg-blue-900 z-20" style={{ backgroundColor: '#1B4F72' }}>
             <div className="max-w-md mx-auto">
               <section className="p-4">
                 <h1 className="text-white font-bold mb-3 text-lg">Rastreamento</h1>
