@@ -1,5 +1,4 @@
-import { Menu } from "lucide-react";
-import correiosLogoPath from "@assets/CorreiosLogo_1752357067907.png";
+import headerImagePath from "@assets/Imagem do WhatsApp de 2025-07-12 à(s) 19.13.26_0a3c5480_1752358438863.jpg";
 
 interface HeaderProps {
   menuOpen: boolean;
@@ -15,32 +14,15 @@ export default function Header({
   setAccessibilityOpen 
 }: HeaderProps) {
   return (
-    <section id="menu" className="bg-gray-100 relative">
+    <section id="menu" className="relative">
       <div className="max-w-md mx-auto">
-        <div className="flex items-center px-4 py-3 bg-gray-100">
-          {/* Hamburger Menu */}
-          <button 
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="hamburger text-blue-600 hover:text-blue-700 transition-colors mr-4"
-            style={{ background: 'none', border: 'none', padding: '4px' }}
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-          
-          {/* Logo Correios - Centered */}
-          <div className="flex-1 flex justify-center">
-            <a href="https://www.correios.com.br" className="logo">
-              <img 
-                src={correiosLogoPath} 
-                alt="Correios" 
-                className="h-20 w-auto"
-                style={{ maxWidth: '240px' }}
-              />
-            </a>
-          </div>
-          
-          {/* Right side placeholder for spacing */}
-          <div className="w-10"></div>
+        {/* Header Image */}
+        <div className="w-full">
+          <img 
+            src={headerImagePath} 
+            alt="Correios Header" 
+            className="w-full h-auto"
+          />
         </div>
 
         {/* Menu dropdown */}
