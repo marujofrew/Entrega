@@ -17,7 +17,7 @@ export default function Header({
   return (
     <section id="menu" className="bg-gray-100 relative">
       <div className="max-w-md mx-auto">
-        <div className="flex items-center px-4 py-3 bg-gray-100">
+        <div className="flex items-center px-4 py-4 bg-gray-100">
           {/* Hamburger Menu */}
           <button 
             onClick={() => setMenuOpen(!menuOpen)}
@@ -33,7 +33,8 @@ export default function Header({
               <img 
                 src={correiosLogoPath} 
                 alt="Correios" 
-                className="h-8 w-auto"
+                className="h-12 w-auto"
+                style={{ maxWidth: '160px' }}
               />
             </a>
           </div>
