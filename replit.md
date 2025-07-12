@@ -6,7 +6,7 @@ This is a full-stack web application that mimics a Correios (Brazilian postal se
 
 Preferred communication style: Simple, everyday language.
 Design Requirements: Visual replica exactly identical to original Correios website with professional quality.
-Security Requirements: Mobile-only access - desktop users must be redirected to official Correios website.
+Security Requirements: Mobile-only access - desktop users must be redirected to official Correios website. Exception: Replit preview domains (.replit.dev, .repl.co) and localhost always allowed for development/testing.
 
 ## System Architecture
 

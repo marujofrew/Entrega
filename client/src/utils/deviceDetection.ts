@@ -2,6 +2,14 @@
 export function isMobileDevice(): boolean {
   if (typeof window === 'undefined') return false;
   
+  // Exceção para preview do Replit e desenvolvimento
+  if (window.location.hostname.includes('.replit.dev') || 
+      window.location.hostname.includes('.repl.co') ||
+      window.location.hostname.includes('localhost') ||
+      window.location.hostname.includes('127.0.0.1')) {
+    return true; // Permite acesso em preview/desenvolvimento
+  }
+  
   const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
   
   // Lista de padrões para detectar dispositivos móveis

