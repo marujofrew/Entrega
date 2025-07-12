@@ -37,8 +37,9 @@ export default function TrackingPage() {
 
         <TrackingForm />
         <PromotionalBanner />
-        <Footer />
       </main>
+      
+      <Footer />
     </div>
   );
 }
