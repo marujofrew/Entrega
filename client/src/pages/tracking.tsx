@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "@/components/tracking/Header";
 import TrackingForm from "@/components/tracking/TrackingForm";
 import PromotionalBanner from "@/components/tracking/PromotionalBanner";
+import Footer from "@/components/tracking/Footer";
 import { ChevronLeft } from "lucide-react";
 
 export default function TrackingPage() {
@@ -36,6 +37,7 @@ export default function TrackingPage() {
 
         <TrackingForm />
         <PromotionalBanner />
+        <Footer />
       </main>
     </div>
   );
