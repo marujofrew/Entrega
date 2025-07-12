@@ -23,8 +23,10 @@
   --destructive-foreground: hsl(60, 9.1%, 97.8%);
   --ring: hsl(20, 14.3%, 4.1%);
   --radius: 0.5rem;
-  --correios-blue: hsl(208, 65%, 33%);
-  --correios-light-blue: hsl(199, 89%, 48%);
+  --correios-blue: #1B4F72;
+  --correios-light-blue: #3498DB;
+  --correios-yellow: #FDE047;
+  --correios-gray: #F8F9FA;
 }
 
 .dark {

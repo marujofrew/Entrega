@@ -10,18 +10,17 @@ export default function TrackingForm() {
 
   const refreshCaptcha = () => {
     // Generate new CAPTCHA
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
     for (let i = 0; i < 6; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    setCaptchaValue(result.toLowerCase());
+    setCaptchaValue(result);
   };
 
   const playCaptchaAudio = () => {
     // Play CAPTCHA audio
     console.log("Playing CAPTCHA audio:", captchaValue);
-    // TODO: Implement text-to-speech functionality
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -44,83 +43,101 @@ export default function TrackingForm() {
       return;
     }
     
-    // TODO: Implement tracking lookup
     console.log("Submitting tracking request:", { trackingCode, captchaText });
   };
 
   return (
-    <div className="px-4 py-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Rastreamento</h1>
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-bold text-gray-800">Rastreamento</h3>
+      </div>
       
       <form onSubmit={handleSubmit}>
-        <div className="bg-gray-100 rounded-lg p-4 mb-6">
-          <p className="text-sm text-gray-700 mb-4">
-            Deseja acompanhar seu objeto?<br />
-            Digite seu CPF/CNPJ <strong>ou</strong> código* de rastreamento.
-          </p>
-          
-          {/* Tracking Input */}
-          <div className="mb-4">
-            <Input
-              type="text"
-              placeholder="AA123456785BR"
-              value={trackingCode}
-              onChange={(e) => setTrackingCode(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-            />
+        <div className="bg-gray-100 rounded-lg p-6">
+          {/* Tracking Input Section */}
+          <div className="mb-6">
+            <div className="mb-4">
+              <label htmlFor="objeto" className="block text-sm text-gray-700 mb-3">
+                Deseja acompanhar seu objeto?<br />
+                Digite seu CPF/CNPJ <strong>ou</strong> código* de rastreamento.
+              </label>
+              <Input
+                id="objeto"
+                name="objeto"
+                type="text"
+                placeholder="AA123456785BR"
+                value={trackingCode}
+                onChange={(e) => setTrackingCode(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                required
+              />
+            </div>
+            <div className="text-xs text-gray-600 mb-4">* limite de 20 objetos</div>
           </div>
           
-          <p className="text-xs text-gray-600 mb-4">* limite de 20 objetos</p>
-          
           {/* CAPTCHA Section */}
-          <div className="mb-4">
-            {/* CAPTCHA Image */}
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="bg-white border-2 border-gray-300 rounded p-2 flex-1">
-                <div className="captcha-text bg-gray-200 h-12 flex items-center justify-center rounded text-gray-600 text-lg font-mono tracking-wider">
+          <div className="mb-6">
+            <div className="flex items-start gap-3 mb-4">
+              {/* CAPTCHA Image */}
+              <div className="flex-1 bg-white border border-gray-300 p-2 rounded">
+                <div 
+                  className="h-16 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center rounded text-gray-700 text-xl font-mono tracking-widest relative overflow-hidden"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='noise' width='4' height='4' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='1' cy='1' r='0.5' fill='%23ddd'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='60' fill='url(%23noise)'/%3E%3C/svg%3E")`,
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                    transform: 'skew(-5deg)'
+                  }}
+                >
                   {captchaValue}
+                  {/* Add some visual noise */}
+                  <div className="absolute inset-0 opacity-20 bg-gradient-to-r from-transparent via-white to-transparent"></div>
                 </div>
               </div>
-              <div className="flex flex-col space-y-1">
-                <button
-                  type="button"
-                  onClick={refreshCaptcha}
-                  className="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded flex items-center justify-center transition-colors"
-                >
-                  <RotateCcw className="w-3 h-3 text-gray-600" />
-                </button>
+              
+              {/* CAPTCHA Controls */}
+              <div className="flex flex-col gap-1">
                 <button
                   type="button"
                   onClick={playCaptchaAudio}
-                  className="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded flex items-center justify-center transition-colors"
+                  className="w-8 h-8 bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-gray-600 transition-colors"
+                  title="Ouvir CAPTCHA"
                 >
-                  <Volume2 className="w-3 h-3 text-gray-600" />
+                  <Volume2 className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={refreshCaptcha}
+                  className="w-8 h-8 bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-gray-600 transition-colors"
+                  title="Atualizar CAPTCHA"
+                >
+                  <RotateCcw className="w-4 h-4" />
                 </button>
               </div>
             </div>
             
-            <p className="text-sm text-gray-700 mb-2">Digite o texto contido na imagem</p>
-            
-            {/* CAPTCHA Input */}
-            <Input
-              type="text"
-              value={captchaText}
-              onChange={(e) => setCaptchaText(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-            />
+            <div className="mb-3">
+              <label htmlFor="captcha" className="block text-sm text-gray-700 mb-2">
+                Digite o texto contido na imagem
+              </label>
+              <div className="flex gap-2">
+                <Input
+                  id="captcha"
+                  name="captcha"
+                  type="text"
+                  value={captchaText}
+                  onChange={(e) => setCaptchaText(e.target.value)}
+                  className="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  autoComplete="off"
+                />
+                <Button
+                  type="submit"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+                >
+                  Consultar
+                </Button>
+              </div>
+            </div>
           </div>
-          
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full font-medium py-2 px-4 rounded-md transition-colors"
-            style={{ 
-              backgroundColor: 'var(--correios-blue)',
-              color: 'white'
-            }}
-          >
-            Consultar
-          </Button>
         </div>
       </form>
     </div>

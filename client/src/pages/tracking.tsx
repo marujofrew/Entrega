@@ -15,7 +15,31 @@ export default function TrackingPage() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="min-h-screen bg-white">
+      {/* Accessibility Section */}
+      <section className="bg-blue-800 text-white text-xs">
+        <div className="max-w-md mx-auto px-4 py-1">
+          <button 
+            onClick={() => setAccessibilityOpen(!accessibilityOpen)}
+            className="text-white hover:text-gray-200 flex items-center"
+          >
+            <span>Acessibilidade</span>
+            <ChevronLeft className={`w-3 h-3 ml-1 transform transition-transform ${accessibilityOpen ? 'rotate-90' : 'rotate-0'}`} />
+          </button>
+          {accessibilityOpen && (
+            <div className="mt-2 space-y-1">
+              <a href="#" className="block text-xs hover:underline">Ir para o conteúdo</a>
+              <a href="#" className="block text-xs hover:underline">Ir para o menu</a>
+              <a href="#" className="block text-xs hover:underline">Ir para a busca</a>
+              <a href="#" className="block text-xs hover:underline">Ir para o rodapé</a>
+              <a href="#" className="block text-xs hover:underline">Alto contraste</a>
+              <a href="#" className="block text-xs hover:underline">Libras</a>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Header */}
       <Header 
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
@@ -23,17 +47,15 @@ export default function TrackingPage() {
         setAccessibilityOpen={setAccessibilityOpen}
       />
       
-      <main className="max-w-md mx-auto bg-white min-h-screen">
+      <main className="max-w-md mx-auto bg-white">
         {/* Breadcrumb */}
-        <div className="px-4 py-3 bg-gray-100">
-          <button 
-            onClick={handleGoBack}
-            className="flex items-center text-blue-600 hover:text-blue-700 transition-colors"
-          >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            <span className="text-sm font-medium">Rastreamento</span>
-          </button>
-        </div>
+        <nav className="px-4 py-3 border-b border-gray-200">
+          <div className="text-sm text-gray-600">
+            <span>Portal Correios</span>
+            <span className="mx-2">›</span>
+            <span className="text-blue-600 font-medium">Rastreamento</span>
+          </div>
+        </nav>
 
         <TrackingForm />
         <PromotionalBanner />
