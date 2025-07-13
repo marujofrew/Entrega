@@ -11,7 +11,7 @@ export default function PromotionalBanner() {
         <img 
           src={bannerImagePath} 
           alt="Um Correios para chamar de seu - Editais reabertos para contrato de lojas parceiras no Rio Grande do Sul. Clique aqui e saiba mais"
-          className="w-full h-auto rounded-lg shadow-sm"
+          className="w-full h-auto shadow-sm"
         />
       </div>
     </div>
