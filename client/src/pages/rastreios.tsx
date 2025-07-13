@@ -44,55 +44,55 @@ export default function RastreiosPage() {
       code: "BR123456789BR",
       events: [
         {
-          date: "20/01/2025",
-          time: "16:58",
-          status: "Objeto saiu para entrega ao remetente",
-          location: "BRASÍLIA - DF",
-          icon: "📫"
+          date: "13/07/2025",
+          status: "Previsão de Entrega",
+          details: "Receber até dia 13/07/2025 após o pagamento",
+          location: "Curitiba - PR",
+          icon: "📅",
+          type: "forecast",
+          hasPayment: true
         },
         {
-          date: "20/01/2025",
-          time: "14:57",
-          status: "Objeto não entregue - carteiro não atendido",
-          location: "BRASÍLIA - DF",
-          details: "Por favor, aguarde. Será realizada nova tentativa de entrega",
-          icon: "❌"
+          date: "",
+          status: "Objeto aguardando pagamento",
+          details: "em Unidade de Fiscalização Aduaneira, Curitiba, PR",
+          location: "Curitiba - PR",
+          icon: "$",
+          type: "payment",
+          hasPayment: true,
+          paymentLink: "Realizar o pagamento: Efetuar Pagamento"
         },
         {
-          date: "20/01/2025",
-          time: "06:54",
-          status: "Objeto saiu para entrega ao destinatário",
-          location: "BRASÍLIA - DF",
-          details: "É preciso ter alguém no endereço para receber o carteiro",
-          icon: "📫"
-        },
-        {
-          date: "16/01/2025",
-          time: "10:32",
+          date: "",
           status: "Objeto em transferência - por favor aguarde",
-          location: "da Unidade de Tratamento, BRASÍLIA - DF para Unidade de Distribuição, Brasília - DF",
-          icon: "🚚"
+          details: "de Unidade de Tratamento, Curitiba, PR para Unidade de Fiscalização Aduaneira - Curitiba, PR",
+          location: "Curitiba - PR",
+          icon: "🚚",
+          type: "transit"
         },
         {
-          date: "15/01/2025",
-          time: "10:32",
+          date: "",
+          status: "Objeto recebido em território nacional",
+          details: "",
+          location: "Curitiba - PR",
+          icon: "🇧🇷",
+          type: "received"
+        },
+        {
+          date: "",
           status: "Objeto em transferência - por favor aguarde",
-          location: "da Unidade de Distribuição, PALMAS - TO para Unidade de Tratamento, Brasília - DF",
-          icon: "🚚"
+          details: "de Unidade de Tratamento, Shanghai - China para Unidade de Tratamento Internacional, China",
+          location: "Shanghai - China",
+          icon: "🚚",
+          type: "transit"
         },
         {
-          date: "14/01/2025",
-          time: "10:32",
-          status: "Objeto em transferência - por favor aguarde",
-          location: "da Agência dos Correios, PALMAS - TO para Unidade de Distribuição, Palmas - TO",
-          icon: "🚚"
-        },
-        {
-          date: "14/01/2025",
-          time: "09:44",
-          status: "Objeto não entregue - prazo de retirada expirado",
-          location: "PALMAS - TO",
-          icon: "⏰"
+          date: "",
+          status: "Objeto Postado",
+          details: "",
+          location: "Shanghai - China",
+          icon: "📦",
+          type: "posted"
         }
       ]
     }
@@ -160,37 +160,51 @@ export default function RastreiosPage() {
           </div>
 
           {/* Timeline de eventos */}
-          <div className="bg-white rounded-lg shadow-sm border">
-            {trackingData[0].events.map((event, index) => (
-              <div key={index} className={`flex items-start p-4 ${index !== trackingData[0].events.length - 1 ? 'border-b border-gray-100' : ''}`}>
-                {/* Ícone */}
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-xl">{event.icon}</span>
-                </div>
-                
-                {/* Conteúdo */}
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-medium text-gray-900 text-sm">
-                      {event.status}
-                    </h3>
-                    <span className="text-xs text-gray-500">
-                      {event.date} {event.time}
-                    </span>
+          <div className="bg-white rounded-lg shadow-sm border p-4">
+            <div className="relative">
+              {trackingData[0].events.map((event, index) => (
+                <div key={index} className="flex items-start mb-8 relative">
+                  {/* Linha vertical amarela */}
+                  {index < trackingData[0].events.length - 1 && (
+                    <div className="absolute left-6 top-12 w-0.5 h-16 bg-yellow-400 z-0"></div>
+                  )}
+                  
+                  {/* Ícone */}
+                  <div className="flex-shrink-0 w-12 h-12 bg-white border-2 border-yellow-400 rounded-full flex items-center justify-center mr-4 relative z-10">
+                    {event.type === 'forecast' && <span className="text-xl">📅</span>}
+                    {event.type === 'payment' && <span className="text-xl">💰</span>}
+                    {event.type === 'transit' && <span className="text-xl">🚚</span>}
+                    {event.type === 'received' && <span className="text-xl">🇧🇷</span>}
+                    {event.type === 'posted' && <span className="text-xl">📦</span>}
                   </div>
                   
-                  <p className="text-sm text-gray-600 mb-1">
-                    {event.location}
-                  </p>
-                  
-                  {event.details && (
+                  {/* Conteúdo */}
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 text-base mb-1">
+                      {event.status}
+                    </h3>
+                    
+                    {event.details && (
+                      <p className="text-sm text-gray-600 mb-1">
+                        {event.details}
+                      </p>
+                    )}
+                    
+                    {event.paymentLink && (
+                      <div className="mb-2">
+                        <a href="#" className="text-blue-600 underline text-sm hover:text-blue-800">
+                          {event.paymentLink}
+                        </a>
+                      </div>
+                    )}
+                    
                     <p className="text-sm text-gray-500">
-                      {event.details}
+                      {event.location}
                     </p>
-                  )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Botão para novo rastreamento */}
