@@ -114,16 +114,6 @@ export default function RastreiosPage() {
         <main className="container mx-auto px-4 py-6">
           {/* Cabeçalho da página */}
           <div className="mb-6">
-            <Link href="/">
-              <Button
-                variant="ghost"
-                className="mb-4 text-blue-600 hover:text-blue-700"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Voltar ao início
-              </Button>
-            </Link>
-
             <h1 className="text-2xl font-bold text-gray-800 mb-2">
               Meus Rastreamentos
             </h1>
@@ -134,7 +124,7 @@ export default function RastreiosPage() {
 
           {/* Informações do usuário */}
           <Card className="mb-6">
-            <CardHeader></CardHeader>
+            &nbsp;
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -156,7 +146,7 @@ export default function RastreiosPage() {
             </CardContent>
           </Card>
 
-          {/* Rastreamento de Encomenda */}
+          {/* Rastreamento da Encomenda */}
           <div className="bg-white rounded-lg shadow-sm border p-4">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">
               Código: {trackingData[0].code}
