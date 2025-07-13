@@ -41,81 +41,64 @@ export default function RastreiosPage() {
 
   const trackingData = [
     {
-      id: "BR123456789BR",
-      status: "Objeto entregue",
-      lastUpdate: "12/07/2025 14:30",
-      location: "São Paulo/SP",
-      recipient: userData.nome,
+      code: "BR123456789BR",
       events: [
         {
-          date: "12/07/2025",
-          time: "14:30",
-          status: "Objeto entregue",
-          location: "São Paulo/SP",
-          details: "Objeto entregue ao destinatário"
+          date: "20/01/2025",
+          time: "16:58",
+          status: "Objeto saiu para entrega ao remetente",
+          location: "BRASÍLIA - DF",
+          icon: "📫"
         },
         {
-          date: "12/07/2025",
-          time: "08:15",
-          status: "Objeto saiu para entrega",
-          location: "CDD São Paulo/SP",
-          details: "Objeto saiu para entrega ao destinatário"
+          date: "20/01/2025",
+          time: "14:57",
+          status: "Objeto não entregue - carteiro não atendido",
+          location: "BRASÍLIA - DF",
+          details: "Por favor, aguarde. Será realizada nova tentativa de entrega",
+          icon: "❌"
         },
         {
-          date: "11/07/2025",
-          time: "16:45",
-          status: "Objeto em trânsito",
-          location: "CTE São Paulo/SP",
-          details: "Objeto em trânsito - por favor aguarde"
+          date: "20/01/2025",
+          time: "06:54",
+          status: "Objeto saiu para entrega ao destinatário",
+          location: "BRASÍLIA - DF",
+          details: "É preciso ter alguém no endereço para receber o carteiro",
+          icon: "📫"
         },
         {
-          date: "10/07/2025",
-          time: "09:20",
-          status: "Objeto postado",
-          location: "São Paulo/SP",
-          details: "Objeto postado pelos Correios"
-        }
-      ]
-    },
-    {
-      id: "BR987654321BR",
-      status: "Objeto em trânsito",
-      lastUpdate: "12/07/2025 10:15",
-      location: "Rio de Janeiro/RJ",
-      recipient: userData.nome,
-      events: [
-        {
-          date: "12/07/2025",
-          time: "10:15",
-          status: "Objeto em trânsito",
-          location: "CTE Rio de Janeiro/RJ",
-          details: "Objeto em trânsito - por favor aguarde"
+          date: "16/01/2025",
+          time: "10:32",
+          status: "Objeto em transferência - por favor aguarde",
+          location: "da Unidade de Tratamento, BRASÍLIA - DF para Unidade de Distribuição, Brasília - DF",
+          icon: "🚚"
         },
         {
-          date: "11/07/2025",
-          time: "14:30",
-          status: "Objeto postado",
-          location: "Rio de Janeiro/RJ",
-          details: "Objeto postado pelos Correios"
+          date: "15/01/2025",
+          time: "10:32",
+          status: "Objeto em transferência - por favor aguarde",
+          location: "da Unidade de Distribuição, PALMAS - TO para Unidade de Tratamento, Brasília - DF",
+          icon: "🚚"
+        },
+        {
+          date: "14/01/2025",
+          time: "10:32",
+          status: "Objeto em transferência - por favor aguarde",
+          location: "da Agência dos Correios, PALMAS - TO para Unidade de Distribuição, Palmas - TO",
+          icon: "🚚"
+        },
+        {
+          date: "14/01/2025",
+          time: "09:44",
+          status: "Objeto não entregue - prazo de retirada expirado",
+          location: "PALMAS - TO",
+          icon: "⏰"
         }
       ]
     }
   ];
 
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'objeto entregue':
-        return 'bg-green-100 text-green-800';
-      case 'objeto em trânsito':
-        return 'bg-blue-100 text-blue-800';
-      case 'objeto saiu para entrega':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'objeto postado':
-        return 'bg-gray-100 text-gray-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+
 
   return (
     <MobileOnly>
@@ -169,70 +152,44 @@ export default function RastreiosPage() {
             </CardContent>
           </Card>
 
-          {/* Lista de objetos */}
-          <div className="space-y-4">
-            {trackingData.map((item) => (
-              <Card key={item.id} className="overflow-hidden">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center text-lg">
-                      <Package className="w-5 h-5 mr-2 text-blue-600" />
-                      {item.id}
-                    </CardTitle>
-                    <Badge className={getStatusColor(item.status)}>
-                      {item.status}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Clock className="w-4 h-4 mr-1" />
-                    Última atualização: {item.lastUpdate}
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <MapPin className="w-4 h-4 mr-1" />
-                    {item.location}
-                  </div>
-                </CardHeader>
+          {/* Código de rastreamento */}
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              Código: {trackingData[0].code}
+            </h2>
+          </div>
+
+          {/* Timeline de eventos */}
+          <div className="bg-white rounded-lg shadow-sm border">
+            {trackingData[0].events.map((event, index) => (
+              <div key={index} className={`flex items-start p-4 ${index !== trackingData[0].events.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                {/* Ícone */}
+                <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mr-4">
+                  <span className="text-xl">{event.icon}</span>
+                </div>
                 
-                <CardContent>
-                  <div className="space-y-3">
-                    <h4 className="font-medium text-gray-800 border-b pb-2">
-                      Histórico de movimentação
-                    </h4>
-                    
-                    {item.events.map((event, index) => (
-                      <div key={index} className="flex gap-4 relative">
-                        {/* Timeline dot */}
-                        <div className="flex flex-col items-center">
-                          <div className={`w-3 h-3 rounded-full ${
-                            index === 0 ? 'bg-blue-600' : 'bg-gray-400'
-                          }`} />
-                          {index < item.events.length - 1 && (
-                            <div className="w-px h-8 bg-gray-300 mt-1" />
-                          )}
-                        </div>
-                        
-                        {/* Event content */}
-                        <div className="flex-1 pb-4">
-                          <div className="flex items-center justify-between mb-1">
-                            <p className="font-medium text-gray-800">
-                              {event.status}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {event.date} {event.time}
-                            </p>
-                          </div>
-                          <p className="text-sm text-gray-600 mb-1">
-                            {event.location}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {event.details}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                {/* Conteúdo */}
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-medium text-gray-900 text-sm">
+                      {event.status}
+                    </h3>
+                    <span className="text-xs text-gray-500">
+                      {event.date} {event.time}
+                    </span>
                   </div>
-                </CardContent>
-              </Card>
+                  
+                  <p className="text-sm text-gray-600 mb-1">
+                    {event.location}
+                  </p>
+                  
+                  {event.details && (
+                    <p className="text-sm text-gray-500">
+                      {event.details}
+                    </p>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
 
