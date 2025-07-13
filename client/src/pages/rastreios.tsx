@@ -8,6 +8,11 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 
 export default function RastreiosPage() {
+  // Calcula data de amanhã para previsão de entrega
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const deliveryDate = tomorrow.toLocaleDateString('pt-BR');
+
   // Busca dados da última consulta
   const { data: ultimaConsulta, isLoading } = useQuery({
     queryKey: ["/api/ultima-consulta"],
@@ -161,11 +166,7 @@ export default function RastreiosPage() {
             <div className="mt-4 p-3 bg-gray-50 rounded border-l-4 border-yellow-400">
               <p className="text-sm text-gray-700">
                 <span className="font-semibold">Previsão de Entrega:</span><br />
-                Entrega prevista para {(() => {
-                  const tomorrow = new Date();
-                  tomorrow.setDate(tomorrow.getDate() + 1);
-                  return tomorrow.toLocaleDateString('pt-BR');
-                })()} após o pagamento.
+                Entrega prevista para {deliveryDate} após o pagamento.
               </p>
             </div>
           </div>
