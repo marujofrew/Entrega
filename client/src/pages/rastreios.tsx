@@ -6,14 +6,38 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Package, MapPin, Clock, ArrowLeft, User, Calendar } from 'lucide-react';
 import { Link } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
 
 export default function RastreiosPage() {
-  // Dados estáticos para demonstração
-  const userData = {
-    nome: "João Silva Santos",
-    cpf: "123.456.789-00",
-    consultadoEm: "12/07/2025 23:59"
+  // Busca dados da última consulta
+  const { data: ultimaConsulta, isLoading } = useQuery({
+    queryKey: ['/api/ultima-consulta'],
+    retry: false
+  });
+
+  // Dados estáticos para demonstração se não houver consulta
+  const userData = ultimaConsulta?.data ? {
+    nome: ultimaConsulta.data.nome,
+    cpf: ultimaConsulta.data.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'),
+    consultadoEm: new Date(ultimaConsulta.data.consultadoEm).toLocaleString('pt-BR')
+  } : {
+    nome: "Usuário não identificado",
+    cpf: "000.000.000-00",
+    consultadoEm: "Data não disponível"
   };
+
+  if (isLoading) {
+    return (
+      <MobileOnly>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Carregando dados...</p>
+          </div>
+        </div>
+      </MobileOnly>
+    );
+  }
 
   const trackingData = [
     {
@@ -21,7 +45,7 @@ export default function RastreiosPage() {
       status: "Objeto entregue",
       lastUpdate: "12/07/2025 14:30",
       location: "São Paulo/SP",
-      recipient: "João Silva Santos",
+      recipient: userData.nome,
       events: [
         {
           date: "12/07/2025",
@@ -58,7 +82,7 @@ export default function RastreiosPage() {
       status: "Objeto em trânsito",
       lastUpdate: "12/07/2025 10:15",
       location: "Rio de Janeiro/RJ",
-      recipient: "João Silva Santos",
+      recipient: userData.nome,
       events: [
         {
           date: "12/07/2025",

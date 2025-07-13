@@ -38,11 +38,8 @@ export default function TrackingForm() {
   // Mutation para consultar CPF
   const consultarCpfMutation = useMutation({
     mutationFn: async (cpf: string) => {
-      return apiRequest({
-        method: 'POST',
-        endpoint: '/api/cpf/consultar',
-        body: { cpf }
-      });
+      const response = await apiRequest('POST', '/api/cpf/consultar', { cpf });
+      return await response.json();
     },
     onSuccess: (data) => {
       toast({
