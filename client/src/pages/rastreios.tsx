@@ -173,57 +173,59 @@ export default function RastreiosPage() {
 
           {/* Timeline de eventos */}
           <div className="bg-white rounded-lg shadow-sm border p-4">
-            <div className="relative">
+            <div className="space-y-0">
               {trackingData[0].events.map((event, index) => (
-                <div key={index} className="flex items-start mb-8 relative">
+                <div key={index} className="relative pb-8 last:pb-0">
                   {/* Linha vertical amarela */}
                   {index < trackingData[0].events.length - 1 && (
-                    <div className="absolute left-6 top-12 w-0.5 h-16 bg-yellow-400 z-0"></div>
+                    <div className="absolute left-6 top-12 w-0.5 bg-yellow-400" style={{height: 'calc(100% - 48px)'}}></div>
                   )}
 
-                  {/* Ícone */}
-                  <div className="flex-shrink-0 w-12 h-12 bg-white border-2 border-yellow-400 rounded-full flex items-center justify-center mr-4 relative z-10">
-                    {event.type === "forecast" && (
-                      <span className="text-xl">📅</span>
-                    )}
-                    {event.type === "payment" && (
-                      <span className="text-xl">💰</span>
-                    )}
-                    {event.type === "transit" && (
-                      <span className="text-xl">🚚</span>
-                    )}
-                    {event.type === "received" && (
-                      <span className="text-xl">🇧🇷</span>
-                    )}
-                    {event.type === "posted" && (
-                      <span className="text-xl">📦</span>
-                    )}
-                  </div>
+                  <div className="flex items-start">
+                    {/* Ícone */}
+                    <div className="flex-shrink-0 w-12 h-12 bg-white border-2 border-yellow-400 rounded-full flex items-center justify-center mr-4 relative z-10">
+                      {event.type === "forecast" && (
+                        <span className="text-xl">📅</span>
+                      )}
+                      {event.type === "payment" && (
+                        <span className="text-xl">💰</span>
+                      )}
+                      {event.type === "transit" && (
+                        <span className="text-xl">🚚</span>
+                      )}
+                      {event.type === "received" && (
+                        <span className="text-xl">🇧🇷</span>
+                      )}
+                      {event.type === "posted" && (
+                        <span className="text-xl">📦</span>
+                      )}
+                    </div>
 
-                  {/* Conteúdo */}
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 text-base mb-1">
-                      {event.status}
-                    </h3>
+                    {/* Conteúdo */}
+                    <div className="flex-1 min-h-[3rem]">
+                      <h3 className="font-semibold text-gray-900 text-base mb-1">
+                        {event.status}
+                      </h3>
 
-                    {event.details && (
-                      <p className="text-sm text-gray-600 mb-1">
-                        {event.details}
-                      </p>
-                    )}
+                      {event.details && (
+                        <p className="text-sm text-gray-600 mb-2">
+                          {event.details}
+                        </p>
+                      )}
 
-                    {event.paymentLink && (
-                      <div className="mb-2">
-                        <a
-                          href="#"
-                          className="text-blue-600 underline text-sm hover:text-blue-800"
-                        >
-                          {event.paymentLink}
-                        </a>
-                      </div>
-                    )}
+                      {event.paymentLink && (
+                        <div className="mb-2">
+                          <a
+                            href="#"
+                            className="text-blue-600 underline text-sm hover:text-blue-800"
+                          >
+                            {event.paymentLink}
+                          </a>
+                        </div>
+                      )}
 
-                    <p className="text-sm text-gray-500">{event.location}</p>
+                      <p className="text-sm text-gray-500">{event.location}</p>
+                    </div>
                   </div>
                 </div>
               ))}
