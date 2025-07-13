@@ -152,8 +152,8 @@ export default function RastreiosPage() {
               />
               
               {/* Texto na área de Previsão de Entrega */}
-              <div className="absolute top-[75px] left-[100px] text-xs text-gray-700">
-                <p className="font-medium">Receber até dia {deliveryDate}</p>
+              <div className="absolute top-[90px] left-[100px] text-xs text-gray-700">
+                <p className="font-medium text-blue-600">Receber até dia {deliveryDate}</p>
                 <p className="text-gray-600">após o pagamento</p>
               </div>
             </div>
