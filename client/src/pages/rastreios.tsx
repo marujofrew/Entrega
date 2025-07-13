@@ -148,10 +148,6 @@ export default function RastreiosPage() {
 
           {/* Rastreamento da Encomenda */}
           <div className="bg-white rounded-lg shadow-sm border p-4">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
-              Código: {trackingData[0].code}
-            </h2>
-            
             {/* Imagem de rastreamento */}
             <div className="w-full">
               <img 
