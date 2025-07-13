@@ -151,10 +151,15 @@ export default function RastreiosPage() {
                 className="w-full h-auto"
               />
               
-              {/* Texto na área de Previsão de Entrega */}
-              <div className="absolute top-[90px] left-[100px] text-xs text-gray-700">
-                <p className="font-medium text-blue-600">Receber até dia {deliveryDate}</p>
+              {/* Texto sobre a imagem - exemplo na área de previsão */}
+              <div className="absolute top-8 left-16 text-xs text-gray-700">
+                <p className="font-medium">Receber até dia {deliveryDate}</p>
                 <p className="text-gray-600">após o pagamento</p>
+              </div>
+              
+              {/* Exemplo: texto em outra posição específica */}
+              <div className="absolute bottom-20 right-8 bg-white bg-opacity-90 px-2 py-1 rounded text-xs">
+                <p className="text-blue-600 font-medium">Status: Em processamento</p>
               </div>
             </div>
           </div>
