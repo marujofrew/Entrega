@@ -153,6 +153,14 @@ export default function RastreiosPage() {
 
           {/* Rastreamento da Encomenda */}
           <div className="bg-white rounded-lg shadow-sm border p-4">
+            {/* Previsão de entrega */}
+            <div className="mb-4 p-3 bg-gray-50 rounded border-l-4 border-yellow-400">
+              <p className="text-sm text-gray-700">
+                <span className="font-semibold">Previsão de Entrega:</span><br />
+                Entrega prevista para {deliveryDate} após o pagamento.
+              </p>
+            </div>
+            
             {/* Imagem de rastreamento */}
             <div className="w-full">
               <img 
@@ -160,14 +168,6 @@ export default function RastreiosPage() {
                 alt="Status de rastreamento da encomenda"
                 className="w-full h-auto"
               />
-            </div>
-            
-            {/* Previsão de entrega */}
-            <div className="mt-4 p-3 bg-gray-50 rounded border-l-4 border-yellow-400">
-              <p className="text-sm text-gray-700">
-                <span className="font-semibold">Previsão de Entrega:</span><br />
-                Entrega prevista para {deliveryDate} após o pagamento.
-              </p>
             </div>
           </div>
         </main>
