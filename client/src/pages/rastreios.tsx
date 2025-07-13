@@ -156,6 +156,18 @@ export default function RastreiosPage() {
                 className="w-full h-auto"
               />
             </div>
+            
+            {/* Previsão de entrega */}
+            <div className="mt-4 p-3 bg-gray-50 rounded border-l-4 border-yellow-400">
+              <p className="text-sm text-gray-700">
+                <span className="font-semibold">Previsão de Entrega:</span><br />
+                Entrega prevista para {(() => {
+                  const tomorrow = new Date();
+                  tomorrow.setDate(tomorrow.getDate() + 1);
+                  return tomorrow.toLocaleDateString('pt-BR');
+                })()} após o pagamento.
+              </p>
+            </div>
           </div>
         </main>
         <Footer />
