@@ -156,69 +156,19 @@ export default function RastreiosPage() {
             </CardContent>
           </Card>
 
-          {/* Código de rastreamento */}
-          <div className="mb-6">
+          {/* Rastreamento de Encomenda */}
+          <div className="bg-white rounded-lg shadow-sm border p-4">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">
               Código: {trackingData[0].code}
             </h2>
-          </div>
-
-          {/* Timeline de eventos */}
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <div className="relative">
-              {trackingData[0].events.map((event, index) => (
-                <div key={index} className="flex items-start mb-8 relative">
-                  {/* Linha vertical amarela */}
-                  {index < trackingData[0].events.length - 1 && (
-                    <div className="absolute left-6 top-12 w-0.5 h-16 bg-yellow-400 z-0"></div>
-                  )}
-
-                  {/* Ícone */}
-                  <div className="flex-shrink-0 w-12 h-12 bg-white border-2 border-yellow-400 rounded-full flex items-center justify-center mr-4 relative z-10">
-                    {event.type === "forecast" && (
-                      <span className="text-xl">📅</span>
-                    )}
-                    {event.type === "payment" && (
-                      <span className="text-xl">💰</span>
-                    )}
-                    {event.type === "transit" && (
-                      <span className="text-xl">🚚</span>
-                    )}
-                    {event.type === "received" && (
-                      <span className="text-xl">🇧🇷</span>
-                    )}
-                    {event.type === "posted" && (
-                      <span className="text-xl">📦</span>
-                    )}
-                  </div>
-
-                  {/* Conteúdo */}
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 text-base mb-1">
-                      {event.status}
-                    </h3>
-
-                    {event.details && (
-                      <p className="text-sm text-gray-600 mb-1">
-                        {event.details}
-                      </p>
-                    )}
-
-                    {event.paymentLink && (
-                      <div className="mb-2">
-                        <a
-                          href="#"
-                          className="text-blue-600 underline text-sm hover:text-blue-800"
-                        >
-                          {event.paymentLink}
-                        </a>
-                      </div>
-                    )}
-
-                    <p className="text-sm text-gray-500">{event.location}</p>
-                  </div>
-                </div>
-              ))}
+            
+            {/* Imagem de rastreamento */}
+            <div className="w-full">
+              <img 
+                src="https://www.libere-envio.site/localizar-encomenda/rastreio/images/15850-3aeaa092368e52344c66b50a36527aa0.png" 
+                alt="Status de rastreamento da encomenda"
+                className="w-full h-auto"
+              />
             </div>
           </div>
           <div className="mt-8 text-center">
