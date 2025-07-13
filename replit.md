@@ -38,29 +38,34 @@ Security Requirements: Mobile-only access - desktop users must be redirected to 
 ## Key Components
 
 ### Frontend Components
-- **TrackingPage**: Main application page with tracking form
-- **TrackingForm**: Form component with tracking code input and CAPTCHA validation
+- **TrackingPage**: Main application page with CPF tracking form
+- **TrackingForm**: Form component with CPF input, real-time formatting, and API integration
+- **RastreiosPage**: User dashboard displaying tracking information and history
 - **Header**: Correios-branded header with navigation and accessibility options
 - **PromotionalBanner**: Marketing component for Correios services
+- **MobileOnly**: Security component enforcing mobile-only access
 - **UI Components**: Complete shadcn/ui component library for consistent interface
 
 ### Backend Components
-- **Storage Interface**: Abstracted storage layer with memory implementation for development
-- **Route Handler**: Express route registration system (currently minimal)
+- **Storage Interface**: Abstracted storage layer with memory implementation for CPF consultation data
+- **Route Handler**: Express routes with CPF consultation API and mobile security middleware
+- **Mobile Security Middleware**: Backend protection layer redirecting desktop users
+- **External API Integration**: Connection to Elite Manager API for CPF data retrieval
 - **Vite Integration**: Development server with HMR support
 
 ### Shared Components
-- **Schema Definitions**: Drizzle schema with Zod validation for users table
+- **Schema Definitions**: Drizzle schema with Zod validation for users and CPF consultations
 - **Type Definitions**: Shared TypeScript types between frontend and backend
 
 ## Data Flow
 
-1. **User Interaction**: User enters tracking code and completes CAPTCHA on frontend
-2. **Form Validation**: Client-side validation using React Hook Form and Zod schemas
-3. **API Communication**: TanStack Query manages HTTP requests to Express backend
-4. **Data Processing**: Backend processes requests using storage interface
-5. **Database Operations**: Drizzle ORM handles PostgreSQL interactions
-6. **Response Handling**: Results returned through the same pipeline in reverse
+1. **User Interaction**: User enters CPF with real-time formatting on frontend
+2. **Security Check**: Mobile-only access verification (frontend + backend)
+3. **Form Validation**: Client-side validation using React Hook Form and Zod schemas
+4. **CPF Consultation**: Backend calls Elite Manager API to retrieve user data
+5. **Data Storage**: User information stored in memory storage for quick access
+6. **Page Redirection**: Successful consultation redirects to tracking dashboard
+7. **Dashboard Display**: Static tracking data displayed with professional Correios styling
 
 ## External Dependencies
 

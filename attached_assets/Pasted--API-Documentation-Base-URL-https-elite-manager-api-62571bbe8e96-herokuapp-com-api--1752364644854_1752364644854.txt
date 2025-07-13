@@ -1,0 +1,299 @@
+# API Documentation
+
+## Base URL
+
+```
+https://elite-manager-api-62571bbe8e96.herokuapp.com/api
+```
+
+---
+
+## HTTP Codes
+
+- `200 OK` → Requisição concluída com sucesso.
+- `201 Created` → Recurso criado com sucesso.
+- `400 Bad Request` → Requisição inválida.
+- `401 Unauthorized` → Acesso não autorizado ou token inválido.
+- `429 Too Many Requests` → Limite de requisições atingido.
+- `500 Internal Server Error` → Erro inesperado no servidor.
+
+---
+
+## Padrão de Respostas
+
+### Sucesso
+
+```json
+{
+  "success": true,
+  "message": "Mensagem de sucesso",
+  "data": { "..." }
+}
+```
+
+### Erro
+
+```json
+{
+  "success": false,
+  "message": "Mensagem de erro",
+  "error": "Detalhes do erro"
+}
+```
+
+---
+
+## Exemplos Específicos
+
+### 429 - Rate Limit
+
+```json
+{
+  "success": false,
+  "message": "⚠️ Limite de requisições excedido. Tente novamente em breve."
+}
+```
+
+### 404 - Not Found
+
+```json
+{
+  "success": false,
+  "message": "Rota não encontrada"
+}
+```
+
+---
+
+# Endpoints
+
+## 🔍 Consultas
+
+### GET /external/cpf/:cpf
+
+Consulta dados cadastrais de um CPF.
+
+**Parâmetro:** `cpf` (string) — obrigatório, apenas números (ex: 12345678909)
+
+**Sucesso 200:**
+
+```json
+{
+  "success": true,
+  "message": "Consulta realizada com sucesso",
+  "data": {
+    "cpf": "...",
+    "nome": "...",
+    "nome_mae": "...",
+    "data_nascimento": "...",
+    "sexo": "..."
+  }
+}
+```
+
+**Erros:** 400 (CPF inválido), 500 (Erro interno)
+
+---
+
+### GET /external/cep/:cep
+
+Consulta dados de um CEP.
+
+**Parâmetro:** `cep` (string) — obrigatório, apenas números (ex: 01001000)
+
+**Sucesso 200:**
+
+```json
+{
+  "success": true,
+  "message": "Consulta realizada com sucesso",
+  "data": {
+    "cep": "...",
+    "logradouro": "...",
+    "complemento": "...",
+    "unidade": "...",
+    "bairro": "...",
+    "localidade": "...",
+    "uf": "...",
+    "estado": "...",
+    "regiao": "...",
+    "ibge": "...",
+    "gia": "...",
+    "ddd": "...",
+    "siafi": "..."
+  }
+}
+```
+
+**Erros:** 400 (CEP inválido), 500 (Erro interno)
+
+---
+
+## ✉️ Comunicações
+
+### POST /communications/email
+
+Envia um e-mail com conteúdo HTML.
+
+**Body:**
+
+```json
+{
+  "recipient": "usuario@dominio.com",
+  "subject": "Assunto do E-mail",
+  "htmlContent": "<p>Conteúdo em HTML</p>"
+}
+```
+
+**Sucesso 200:**
+
+```json
+{
+  "success": true,
+  "message": "Email enviado com sucesso"
+}
+```
+
+**Erros:** 400 (Campos obrigatórios), 500 (Erro interno)
+
+---
+
+### POST /communications/sms
+
+Envia SMS para um número de telefone.
+
+**Body:**
+
+```json
+{
+  "phoneNumber": "5511999999999",
+  "message": "Seu código é 123456"
+}
+```
+
+**Sucesso 200:**
+
+```json
+{
+  "success": true,
+  "message": "SMS enviado com sucesso",
+  "data": {
+    "message": "...",
+    "sms": {
+      "id": 985,
+      "userId": 7,
+      "phoneNumber": "...",
+      "message": "...",
+      "status": "...",
+      "scheduledFor": null,
+      "sentAt": null,
+      "createdAt": "...",
+      "updatedAt": "...",
+      "externalId": null,
+      "errorMessage": null,
+      "cost": null
+    }
+  }
+}
+```
+
+**Erros:** 400 (Campos obrigatórios), 500 (Erro interno)
+
+---
+
+## 💸 Pagamentos
+
+### POST /payments/pix/generate
+
+Gera pagamento Pix via For4Payments.
+
+**Body:**
+
+```json
+{
+  "name": "...",
+  "email": "...",
+  "cpf": "...",
+  "phone": "...",
+  "amount": 89.8,
+  "description": "..."
+}
+```
+
+**Sucesso 201:**
+
+```json
+{
+  "success": true,
+  "message": "Pagamento PIX gerado com sucesso",
+  "data": {
+    "paymentId": "...",
+    "pixCode": "...",
+    "pixQrCode": "..."
+  }
+}
+```
+
+**Erros:** 400 (Campos inválidos), 500 (Erro interno)
+
+---
+
+### GET /payments/pix/status/:paymentId
+
+Consulta status do pagamento Pix.
+
+**Parâmetro:** `paymentId` (string) — obrigatório
+
+**Sucesso 200:**
+
+```json
+{
+  "success": true,
+  "message": "Status do pagamento consultado com sucesso",
+  "data": {
+    "paymentId": "...",
+    "status": "..."
+  }
+}
+```
+
+**Erros:** 400 (Parâmetro ausente), 500 (Erro interno)
+
+---
+
+### POST /payments/paybets/pix/generate
+
+Gera Pix via PayBets.
+
+**Body:**
+
+```json
+{
+  "amount": 1,
+  "external_id": "...",
+  "clientCallbackUrl": "...",
+  "name": "...",
+  "email": "...",
+  "document": "..."
+}
+```
+
+**Sucesso 201:**
+
+```json
+{
+  "success": true,
+  "message": "Pix gerado com sucesso",
+  "data": {
+    "message": "...",
+    "qrCodeResponse": {
+      "transactionId": "...",
+      "status": "...",
+      "qrcode": "...",
+      "amount": 1
+    }
+  }
+}
+```
+
+**Erros:** 400 (Campos obrigatórios), 500 (Erro interno)

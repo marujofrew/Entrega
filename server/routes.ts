@@ -1,6 +1,8 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { insertCpfConsultaSchema } from "@shared/schema";
+import { z } from "zod";
 
 // Middleware para detectar dispositivos móveis
 function mobileOnlyMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -74,6 +76,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
       userAgent,
       timestamp: new Date().toISOString()
     });
+  });
+
+  // Rota para consultar CPF
+  app.post('/api/cpf/consultar', async (req, res) => {
+    try {
+      const { cpf } = req.body;
+
+      // Validação básica do CPF
+      if (!cpf || typeof cpf !== 'string') {
+        return res.status(400).json({
+          success: false,
+          message: 'CPF é obrigatório'
+        });
+      }
+
+      // Remove formatação do CPF
+      const cpfLimpo = cpf.replace(/\D/g, '');
+
+      if (cpfLimpo.length !== 11) {
+        return res.status(400).json({
+          success: false,
+          message: 'CPF deve ter 11 dígitos'
+        });
+      }
+
+      // Verifica se já existe na nossa base
+      const consultaExistente = await storage.getCpfConsulta(cpfLimpo);
+      if (consultaExistente) {
+        return res.json({
+          success: true,
+          message: 'Dados encontrados',
+          data: consultaExistente
+        });
+      }
+
+      // Consulta na API externa
+      const apiUrl = `https://elite-manager-api-62571bbe8e96.herokuapp.com/api/external/cpf/${cpfLimpo}`;
+      const response = await fetch(apiUrl);
+      
+      if (!response.ok) {
+        return res.status(400).json({
+          success: false,
+          message: 'Erro ao consultar CPF na base de dados'
+        });
+      }
+
+      const apiData = await response.json();
+
+      if (!apiData.success) {
+        return res.status(400).json({
+          success: false,
+          message: apiData.message || 'CPF não encontrado'
+        });
+      }
+
+      // Salva na nossa base de dados
+      const dadosParaSalvar = {
+        cpf: cpfLimpo,
+        nome: apiData.data.nome,
+        nomeMae: apiData.data.nome_mae,
+        dataNascimento: apiData.data.data_nascimento,
+        sexo: apiData.data.sexo
+      };
+
+      const novaConsulta = await storage.createCpfConsulta(dadosParaSalvar);
+
+      res.json({
+        success: true,
+        message: 'Consulta realizada com sucesso',
+        data: novaConsulta
+      });
+
+    } catch (error) {
+      console.error('Erro ao consultar CPF:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Erro interno do servidor'
+      });
+    }
   });
 
   // use storage to perform CRUD operations on the storage interface

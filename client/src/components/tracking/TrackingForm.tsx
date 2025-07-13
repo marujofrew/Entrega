@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useMutation } from '@tanstack/react-query';
+import { apiRequest } from '@/lib/queryClient';
+import { useLocation } from 'wouter';
+import { useToast } from '@/hooks/use-toast';
 
 export default function TrackingForm() {
   const [trackingCode, setTrackingCode] = useState("");
+  const [, setLocation] = useLocation();
+  const { toast } = useToast();
 
   const formatCPF = (value: string) => {
     // Remove todos os caracteres não numéricos
@@ -29,15 +35,57 @@ export default function TrackingForm() {
     setTrackingCode(formattedValue);
   };
 
+  // Mutation para consultar CPF
+  const consultarCpfMutation = useMutation({
+    mutationFn: async (cpf: string) => {
+      return apiRequest({
+        method: 'POST',
+        endpoint: '/api/cpf/consultar',
+        body: { cpf }
+      });
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Consulta realizada",
+        description: `Bem-vindo(a), ${data.data.nome}!`
+      });
+      // Redireciona para página de rastreios
+      setLocation('/rastreios');
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erro na consulta",
+        description: error.message || "Erro ao consultar CPF",
+        variant: "destructive"
+      });
+    }
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!trackingCode.trim()) {
-      alert("Por favor, digite o código de rastreamento ou CPF/CNPJ");
+      toast({
+        title: "Campo obrigatório",
+        description: "Por favor, digite seu CPF",
+        variant: "destructive"
+      });
       return;
     }
 
-    console.log("Submitting tracking request:", { trackingCode });
+    // Remove formatação e verifica se tem 11 dígitos
+    const cpfLimpo = trackingCode.replace(/\D/g, '');
+    
+    if (cpfLimpo.length !== 11) {
+      toast({
+        title: "CPF inválido",
+        description: "O CPF deve ter 11 dígitos",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    consultarCpfMutation.mutate(cpfLimpo);
   };
 
   return (
@@ -76,9 +124,10 @@ export default function TrackingForm() {
           <div className="mt-6">
             <Button
               type="submit"
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+              disabled={consultarCpfMutation.isPending}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Consultar
+              {consultarCpfMutation.isPending ? "Consultando..." : "Consultar"}
             </Button>
           </div>
         </div>

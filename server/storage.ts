@@ -1,4 +1,4 @@
-import { users, type User, type InsertUser } from "@shared/schema";
+import { users, type User, type InsertUser, type CpfConsulta, type InsertCpfConsulta } from "@shared/schema";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -7,15 +7,21 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  getCpfConsulta(cpf: string): Promise<CpfConsulta | undefined>;
+  createCpfConsulta(consulta: InsertCpfConsulta): Promise<CpfConsulta>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
-  currentId: number;
+  private cpfConsultas: Map<string, CpfConsulta>;
+  currentUserId: number;
+  currentCpfId: number;
 
   constructor() {
     this.users = new Map();
-    this.currentId = 1;
+    this.cpfConsultas = new Map();
+    this.currentUserId = 1;
+    this.currentCpfId = 1;
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -29,10 +35,25 @@ export class MemStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentId++;
+    const id = this.currentUserId++;
     const user: User = { ...insertUser, id };
     this.users.set(id, user);
     return user;
+  }
+
+  async getCpfConsulta(cpf: string): Promise<CpfConsulta | undefined> {
+    return this.cpfConsultas.get(cpf);
+  }
+
+  async createCpfConsulta(insertCpfConsulta: InsertCpfConsulta): Promise<CpfConsulta> {
+    const id = this.currentCpfId++;
+    const cpfConsulta: CpfConsulta = { 
+      ...insertCpfConsulta, 
+      id,
+      consultadoEm: new Date()
+    };
+    this.cpfConsultas.set(insertCpfConsulta.cpf, cpfConsulta);
+    return cpfConsulta;
   }
 }
 
