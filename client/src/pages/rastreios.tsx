@@ -151,8 +151,23 @@ export default function RastreiosPage() {
             />
             
             {/* Nome do destinatário sobre a imagem */}
-            <div className="absolute top-[180px] left-[20px] text-sm font-bold text-black">
-              {userData.nome.toUpperCase()}
+            <div className="absolute top-[180px] left-[20px] text-sm font-bold text-black leading-tight">
+              {(() => {
+                const nomeCompleto = userData.nome.toUpperCase();
+                const palavras = nomeCompleto.split(' ');
+                
+                if (palavras.length > 3) {
+                  const primeiraLinha = palavras.slice(0, Math.ceil(palavras.length / 2)).join(' ');
+                  const segundaLinha = palavras.slice(Math.ceil(palavras.length / 2)).join(' ');
+                  return (
+                    <>
+                      <div>{primeiraLinha}</div>
+                      <div>{segundaLinha}</div>
+                    </>
+                  );
+                }
+                return nomeCompleto;
+              })()}
             </div>
           </div>
 
