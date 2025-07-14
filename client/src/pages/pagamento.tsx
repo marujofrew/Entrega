@@ -60,7 +60,7 @@ export default function PagamentoPage() {
     }
   }, [ultimaConsulta]);
 
-  const valorTaxa = 80.96; // Taxa alfandegária total
+  const valorTaxa = 47.90; // Taxa alfandegária total
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -355,11 +355,11 @@ Deseja continuar com PIX de demonstração para testes?
             <CardContent>
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-gray-600">Imposto de Importação</span>
-                <span className="font-medium">R$ 45,50</span>
+                <span className="font-medium">R$ 18,50</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-gray-600">ICMS</span>
-                <span className="font-medium">R$ 12,40</span>
+                <span className="font-medium">R$ 8,90</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-gray-600">Despacho Postal</span>
@@ -367,7 +367,7 @@ Deseja continuar com PIX de demonstração para testes?
               </div>
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-gray-600">Multa</span>
-                <span className="font-medium">R$ 8,06</span>
+                <span className="font-medium">R$ 5,50</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-gray-600">Valor Complementar</span>
@@ -375,7 +375,7 @@ Deseja continuar com PIX de demonstração para testes?
               </div>
               <div className="flex justify-between items-center py-3 font-bold text-lg border-t">
                 <span>Total</span>
-                <span className="text-blue-600">R$ 80,96</span>
+                <span className="text-blue-600">R$ 47,90</span>
               </div>
             </CardContent>
           </Card>
