@@ -42,10 +42,6 @@ export default function TrackingForm() {
       return await response.json();
     },
     onSuccess: (data) => {
-      toast({
-        title: "Consulta realizada",
-        description: `Bem-vindo(a), ${data.data.nome}!`
-      });
       // Redireciona para página de rastreios
       setLocation('/rastreios');
     },

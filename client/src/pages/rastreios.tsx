@@ -173,9 +173,9 @@ export default function RastreiosPage() {
                 return nomeCompleto;
               })()}
             </div>
-            
+
             {/* CPF do destinatário sobre a imagem */}
-            <div className="absolute top-[200px] left-[70px] text-sm text-black">
+            <div className="absolute top-[242px] left-[100px] text-sm text-black">
               {userData.cpf}
             </div>
           </div>
