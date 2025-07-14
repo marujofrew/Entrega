@@ -151,6 +151,7 @@ export default function PagamentoPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': '3d6bd4c17dd31877b77482b341c74d32494a1d6fbdee4c239cf8432b424b1abf'
         },
         body: JSON.stringify({
           name: dadosUsuario.nome,

@@ -66,6 +66,7 @@ Security Requirements: Mobile-only access - desktop users must be redirected to 
 5. **Data Storage**: User information stored in memory storage for quick access
 6. **Page Redirection**: Successful consultation redirects to tracking dashboard
 7. **Dashboard Display**: Static tracking data displayed with professional Correios styling
+8. **Payment Processing**: Real PIX generation via For4Payments API integration with QR Code and copy-paste functionality
 
 ## External Dependencies
 
@@ -76,6 +77,13 @@ Security Requirements: Mobile-only access - desktop users must be redirected to 
 - **@radix-ui/***: Headless UI component primitives
 - **wouter**: Lightweight React router
 - **date-fns**: Date manipulation utilities
+
+### External APIs
+- **Elite Manager API**: CPF data retrieval and For4Payments PIX integration
+  - Base URL: https://elite-manager-api-62571bbe8e96.herokuapp.com/api
+  - API Key: 3d6bd4c17dd31877b77482b341c74d32494a1d6fbdee4c239cf8432b424b1abf
+  - Endpoints: /external/cpf/:cpf, /payments/for4payments/pix/generate
+- **For4Payments**: Real PIX payment processing system integrated via Elite Manager API
 
 ### Development Dependencies
 - **Vite**: Fast build tool and development server
