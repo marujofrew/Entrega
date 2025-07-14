@@ -143,12 +143,17 @@ export default function RastreiosPage() {
           </Card>
 
           {/* Imagem da caixa PAC */}
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <img 
               src={caixaPacImage} 
               alt="Caixa PAC dos Correios"
               className="w-full h-auto rounded-lg shadow-sm"
             />
+            
+            {/* Nome do destinatário sobre a imagem */}
+            <div className="absolute top-[180px] left-[20px] text-sm font-bold text-black">
+              {userData.nome.toUpperCase()}
+            </div>
           </div>
 
           {/* Rastreamento da Encomenda */}
