@@ -7,7 +7,6 @@ import NotFound from "@/pages/not-found";
 import TrackingPage from "@/pages/tracking";
 import RastreiosPage from "@/pages/rastreios";
 import PagamentoPage from "@/pages/pagamento";
-import MobileOnly from "@/components/MobileOnly";
 
 function Router() {
   return (
@@ -26,9 +25,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <MobileOnly>
-          <Router />
-        </MobileOnly>
+        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );

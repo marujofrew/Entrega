@@ -1,3 +1,4 @@
+import MobileOnly from "@/components/MobileOnly";
 import Header from "@/components/tracking/Header";
 import TrackingForm from "@/components/tracking/TrackingForm";
 import PromotionalBanner from "@/components/tracking/PromotionalBanner";
@@ -5,7 +6,8 @@ import Footer from "@/components/tracking/Footer";
 
 export default function TrackingPage() {
   return (
-    <div className="bg-white">
+    <MobileOnly>
+      <div className="bg-white">
       {/* Header */}
       <Header />
 
@@ -24,6 +26,7 @@ export default function TrackingPage() {
 
       {/* Footer with full width */}
       <Footer />
-    </div>
+      </div>
+    </MobileOnly>
   );
 }
