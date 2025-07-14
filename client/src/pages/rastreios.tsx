@@ -180,6 +180,13 @@ export default function RastreiosPage() {
             </div>
           </div>
 
+          {/* Botão Regularizar Encomenda */}
+          <div className="mb-6 text-center">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wide transition-colors">
+              REGULARIZAR MINHA ENCOMENDA
+            </button>
+          </div>
+
           {/* Rastreamento da Encomenda */}
           <div className="bg-white rounded-lg shadow-sm border p-4">
             {/* Imagem de rastreamento com texto sobreposto */}
