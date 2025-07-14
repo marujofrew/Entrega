@@ -1,14 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import MobileOnly from "@/components/MobileOnly";
 import Header from "@/components/tracking/Header";
 import Footer from "@/components/tracking/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Smartphone } from "lucide-react";
 
 export default function PagamentoPage() {
   const [, setLocation] = useLocation();
+  
+  // Busca dados da última consulta para preencher automaticamente
+  const { data: ultimaConsulta } = useQuery({
+    queryKey: ["/api/ultima-consulta"],
+    retry: false,
+  });
+
+  const [dadosUsuario, setDadosUsuario] = useState({
+    nome: '',
+    cpf: '',
+    email: '',
+    telefone: ''
+  });
+
+  // Preenche automaticamente nome e CPF quando os dados da consulta estão disponíveis
+  useEffect(() => {
+    if (ultimaConsulta?.data) {
+      setDadosUsuario(prev => ({
+        ...prev,
+        nome: ultimaConsulta.data.nome,
+        cpf: ultimaConsulta.data.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+      }));
+    }
+  }, [ultimaConsulta]);
 
   const valorTaxa = 15.00; // Taxa alfandegária fixa
 
@@ -52,6 +79,61 @@ export default function PagamentoPage() {
               <div className="flex justify-between items-center py-3 font-bold text-lg">
                 <span>Total</span>
                 <span className="text-blue-600">R$ {(valorTaxa + 2.50).toFixed(2)}</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Dados do Usuário */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="text-lg">Dados do Usuário</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="nome">Nome Completo</Label>
+                  <Input
+                    id="nome"
+                    type="text"
+                    value={dadosUsuario.nome}
+                    onChange={(e) => setDadosUsuario(prev => ({ ...prev, nome: e.target.value }))}
+                    placeholder="Nome completo"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="cpf">CPF</Label>
+                  <Input
+                    id="cpf"
+                    type="text"
+                    value={dadosUsuario.cpf}
+                    onChange={(e) => setDadosUsuario(prev => ({ ...prev, cpf: e.target.value }))}
+                    placeholder="000.000.000-00"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="email">E-mail</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={dadosUsuario.email}
+                    onChange={(e) => setDadosUsuario(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="seu@email.com"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="telefone">Telefone</Label>
+                  <Input
+                    id="telefone"
+                    type="tel"
+                    value={dadosUsuario.telefone}
+                    onChange={(e) => setDadosUsuario(prev => ({ ...prev, telefone: e.target.value }))}
+                    placeholder="(11) 99999-9999"
+                    required
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>
