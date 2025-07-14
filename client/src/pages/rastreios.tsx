@@ -4,10 +4,13 @@ import Footer from "@/components/tracking/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
+import { useState, useEffect } from "react";
 import caixaPacImage from "@/assets/image_1752461563401.png";
 
 export default function RastreiosPage() {
   const [, setLocation] = useLocation();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [pageReady, setPageReady] = useState(false);
   
   // Calcula data de amanhã para previsão de entrega
   const tomorrow = new Date();
@@ -19,6 +22,29 @@ export default function RastreiosPage() {
     queryKey: ["/api/ultima-consulta"],
     retry: false,
   });
+
+  // Função para verificar se a imagem foi carregada
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  // Efeito para definir quando a página está pronta
+  useEffect(() => {
+    if (!isLoading && imageLoaded) {
+      // Adiciona um pequeno delay para garantir que tudo foi renderizado
+      const timer = setTimeout(() => {
+        setPageReady(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, imageLoaded]);
+
+  // Pré-carrega a imagem
+  useEffect(() => {
+    const img = new Image();
+    img.onload = handleImageLoad;
+    img.src = caixaPacImage;
+  }, []);
 
   // Dados estáticos para demonstração se não houver consulta
   const userData = ultimaConsulta?.data
@@ -38,13 +64,16 @@ export default function RastreiosPage() {
         consultadoEm: "Data não disponível",
       };
 
-  if (isLoading) {
+  // Exibe loading enquanto dados ou imagem não foram carregados
+  if (isLoading || !pageReady) {
     return (
       <MobileOnly>
         <div className="bg-gray-50 flex items-center justify-center h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Carregando dados...</p>
+            <p className="text-gray-600">
+              {isLoading ? "Carregando dados..." : "Preparando página..."}
+            </p>
           </div>
         </div>
       </MobileOnly>
