@@ -46,11 +46,22 @@ export default function TrackingForm() {
       setLocation('/rastreios');
     },
     onError: (error: any) => {
-      toast({
-        title: "Erro na consulta",
-        description: error.message || "Erro ao consultar CPF",
-        variant: "destructive"
-      });
+      // Verifica se é erro 404 (CPF inválido)
+      if (error.message && error.message.includes('CPF inválido')) {
+        toast({
+          title: "CPF inválido",
+          description: "CPF inválido ou não encontrado",
+          variant: "destructive"
+        });
+        // Limpa o campo CPF
+        setTrackingCode('');
+      } else {
+        toast({
+          title: "Erro na consulta",
+          description: error.message || "Erro ao consultar CPF",
+          variant: "destructive"
+        });
+      }
     }
   });
 

@@ -134,7 +134,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const apiData = await response.json();
           console.log('Dados da API:', apiData);
           
-          if (apiData.success) {
+          if (apiData.success && apiData.data) {
             dadosParaSalvar = {
               cpf: cpfLimpo,
               nome: apiData.data.nome,
@@ -142,6 +142,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
               dataNascimento: apiData.data.data_nascimento,
               sexo: apiData.data.sexo
             };
+          } else if (apiData.success && apiData.data === null) {
+            // CPF não encontrado na API
+            console.log('CPF não encontrado na API - data é null');
+            return res.status(404).json({
+              success: false,
+              message: 'CPF inválido ou não encontrado'
+            });
           } else {
             throw new Error('API retornou sucesso falso');
           }
