@@ -151,7 +151,7 @@ export default function RastreiosPage() {
             />
             
             {/* Nome do destinatário sobre a imagem */}
-            <div className="absolute top-[190px] left-[140px] text-sm text-black leading-tight">
+            <div className="absolute top-[190px] left-[80px] text-sm text-black leading-tight">
               {(() => {
                 const nomeCompleto = userData.nome.toUpperCase();
                 const palavras = nomeCompleto.split(' ');
