@@ -34,6 +34,8 @@ export default function PagamentoPage() {
     '@yahoo.com.br',
     '@uol.com.br'
   ]);
+  const [showPixPayment, setShowPixPayment] = useState(false);
+  const [pixKey, setPixKey] = useState('');
 
   // Preenche automaticamente nome e CPF quando os dados da consulta estão disponíveis
   useEffect(() => {
@@ -127,11 +129,23 @@ export default function PagamentoPage() {
     };
   }, []);
 
+  const handleRealizarPagamento = () => {
+    // Gera uma chave PIX aleatória para demonstração
+    const pixKeyGenerated = `00020126580014BR.GOV.BCB.PIX013654321000198-123456789-${Date.now().toString().slice(-6)}5204000053039865802BR5925EMPRESA BRASILEIRA DE CORR6008BRASILIA62290525${Date.now().toString().slice(-10)}63044A2F`;
+    setPixKey(pixKeyGenerated);
+    setShowPixPayment(true);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Aqui integraria com sistema de pagamento real
     alert('Pagamento processado com sucesso!');
     setLocation('/rastreios');
+  };
+
+  const copyPixKey = () => {
+    navigator.clipboard.writeText(pixKey);
+    alert('Chave PIX copiada para a área de transferência!');
   };
 
   return (
@@ -258,16 +272,28 @@ export default function PagamentoPage() {
             </CardContent>
           </Card>
 
-          {/* Pagamento PIX */}
-          <Card className="mb-6 rounded-none">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Smartphone className="h-6 w-6" />
-                Pagamento via PIX
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit}>
+          {/* Botão Realizar Pagamento */}
+          {!showPixPayment && (
+            <div className="mb-6 text-center">
+              <Button
+                onClick={handleRealizarPagamento}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-lg rounded-none"
+              >
+                Realizar Pagamento
+              </Button>
+            </div>
+          )}
+
+          {/* Pagamento PIX - Exibido apenas após clicar em Realizar Pagamento */}
+          {showPixPayment && (
+            <Card className="mb-6 rounded-none">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Smartphone className="h-6 w-6" />
+                  Pagamento via PIX
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="text-center py-8">
                   <div className="w-48 h-48 bg-gray-100 mx-auto mb-4 flex items-center justify-center">
                     <span className="text-gray-500">QR Code PIX</span>
@@ -275,19 +301,41 @@ export default function PagamentoPage() {
                   <p className="text-sm text-gray-600 mb-2">
                     Escaneie o QR Code com seu app bancário
                   </p>
-                  <p className="text-xs text-gray-500 mb-6">
-                    Ou use a chave PIX: taxa.correios@exemplo.com
+                  <p className="text-xs text-gray-500 mb-4">
+                    Ou use a chave PIX abaixo:
                   </p>
-                  <Button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-lg rounded-none"
-                  >
-                    Confirmar Pagamento PIX
-                  </Button>
+                  
+                  {/* Chave PIX Copia e Cola */}
+                  <div className="mb-6 bg-gray-50 p-4 border">
+                    <p className="text-xs text-gray-600 mb-2">Chave PIX:</p>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={pixKey}
+                        readOnly
+                        className="flex-1 text-xs bg-white border border-gray-300 px-2 py-1 rounded-none"
+                      />
+                      <Button
+                        onClick={copyPixKey}
+                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-xs rounded-none"
+                      >
+                        Copiar
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <form onSubmit={handleSubmit}>
+                    <Button
+                      type="submit"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-lg rounded-none"
+                    >
+                      Confirmar Pagamento PIX
+                    </Button>
+                  </form>
                 </div>
-              </form>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Informações importantes */}
           <Card className="rounded-none">
