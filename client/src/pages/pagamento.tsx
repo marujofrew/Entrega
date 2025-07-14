@@ -86,7 +86,7 @@ export default function PagamentoPage() {
           {/* Dados do Usuário */}
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle className="text-lg">Dados do Usuário</CardTitle>
+              <CardTitle className="text-lg">Confirme seus dados</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
