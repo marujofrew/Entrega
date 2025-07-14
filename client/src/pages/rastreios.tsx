@@ -141,6 +141,15 @@ export default function RastreiosPage() {
             </CardContent>
           </Card>
 
+          {/* Imagem da caixa PAC */}
+          <div className="mb-6">
+            <img 
+              src="@assets/image_1752461563401.png" 
+              alt="Caixa PAC dos Correios"
+              className="w-full h-auto rounded-lg shadow-sm"
+            />
+          </div>
+
           {/* Rastreamento da Encomenda */}
           <div className="bg-white rounded-lg shadow-sm border p-4">
             {/* Imagem de rastreamento com texto sobreposto */}
@@ -152,7 +161,7 @@ export default function RastreiosPage() {
               />
 
               {/* Texto sobre a imagem - exemplo na área de previsão */}
-              <div className="absolute top-[40px] left-[50px] text-xs text-gray-700">
+              <div className="absolute top-[45px] left-[70px] text-xs text-gray-700">
                 <p className="font-medium">
                   Receber até dia {deliveryDate} após o pagamento
                 </p>
