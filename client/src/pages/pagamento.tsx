@@ -46,7 +46,7 @@ export default function PagamentoPage() {
     }
   }, [ultimaConsulta]);
 
-  const valorTaxa = 15.00; // Taxa alfandegária fixa
+  const valorTaxa = 47.59; // Taxa alfandegária total
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -157,16 +157,28 @@ export default function PagamentoPage() {
             </CardHeader>
             <CardContent>
               <div className="flex justify-between items-center py-2 border-b">
-                <span className="text-gray-600">Taxa Alfandegária</span>
-                <span className="font-medium">R$ {valorTaxa.toFixed(2)}</span>
+                <span className="text-gray-600">Imposto de Importação</span>
+                <span className="font-medium">R$ 30,15</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b">
-                <span className="text-gray-600">Taxa de Processamento</span>
-                <span className="font-medium">R$ 2,50</span>
+                <span className="text-gray-600">ICMS</span>
+                <span className="font-medium">R$ 8,22</span>
               </div>
-              <div className="flex justify-between items-center py-3 font-bold text-lg">
+              <div className="flex justify-between items-center py-2 border-b">
+                <span className="text-gray-600">Despacho Postal</span>
+                <span className="font-medium">R$ 7,12</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b">
+                <span className="text-gray-600">Multa</span>
+                <span className="font-medium">R$ 2,10</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b">
+                <span className="text-gray-600">Valor Complementar</span>
+                <span className="font-medium">R$ 0,00</span>
+              </div>
+              <div className="flex justify-between items-center py-3 font-bold text-lg border-t">
                 <span>Total</span>
-                <span className="text-blue-600">R$ {(valorTaxa + 2.50).toFixed(2)}</span>
+                <span className="text-blue-600">R$ 47,59</span>
               </div>
             </CardContent>
           </Card>
