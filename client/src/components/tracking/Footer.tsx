@@ -15,8 +15,8 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="w-full flex justify-center">
-      <div className="max-w-md w-full px-4 py-6" style={{backgroundColor: '#FFE600'}}>
+    <footer className="w-full" style={{backgroundColor: '#FFE600'}}>
+      <div className="max-w-md mx-auto px-4 py-6">
         {/* Fale Conosco Section */}
         <div className="mb-8">
           <h3 className="text-xl font-bold mb-4 text-blue-900">Fale Conosco</h3>
