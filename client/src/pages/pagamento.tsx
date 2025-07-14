@@ -36,6 +36,9 @@ export default function PagamentoPage() {
   ]);
   const [showPixPayment, setShowPixPayment] = useState(false);
   const [pixKey, setPixKey] = useState('');
+  const [qrCodeImage, setQrCodeImage] = useState('');
+  const [paymentId, setPaymentId] = useState('');
+  const [isGeneratingPix, setIsGeneratingPix] = useState(false);
 
   // Preenche automaticamente nome e CPF quando os dados da consulta estão disponíveis
   useEffect(() => {
@@ -129,11 +132,52 @@ export default function PagamentoPage() {
     };
   }, []);
 
-  const handleRealizarPagamento = () => {
-    // Gera uma chave PIX aleatória para demonstração
-    const pixKeyGenerated = `00020126580014BR.GOV.BCB.PIX013654321000198-123456789-${Date.now().toString().slice(-6)}5204000053039865802BR5925EMPRESA BRASILEIRA DE CORR6008BRASILIA62290525${Date.now().toString().slice(-10)}63044A2F`;
-    setPixKey(pixKeyGenerated);
-    setShowPixPayment(true);
+  const handleRealizarPagamento = async () => {
+    try {
+      // Valida se todos os campos obrigatórios estão preenchidos
+      if (!dadosUsuario.nome || !dadosUsuario.cpf || !dadosUsuario.email || !dadosUsuario.telefone) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      setIsGeneratingPix(true);
+
+      // Limpa CPF e telefone para envio
+      const cpfLimpo = dadosUsuario.cpf.replace(/\D/g, '');
+      const telefoneLimpo = dadosUsuario.telefone.replace(/\D/g, '');
+
+      // Gera pagamento PIX via For4Payments
+      const response = await fetch('https://elite-manager-api-62571bbe8e96.herokuapp.com/api/payments/for4payments/pix/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: dadosUsuario.nome,
+          email: dadosUsuario.email,
+          cpf: cpfLimpo,
+          phone: telefoneLimpo,
+          amount: valorTaxa,
+          description: 'Taxa Alfandegária - Correios'
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setPixKey(data.data.pixCode);
+        setQrCodeImage(data.data.pixQrCode);
+        setPaymentId(data.data.paymentId);
+        setShowPixPayment(true);
+      } else {
+        alert('Erro ao gerar pagamento PIX: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Erro ao gerar PIX:', error);
+      alert('Erro ao conectar com o sistema de pagamentos. Tente novamente.');
+    } finally {
+      setIsGeneratingPix(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -277,9 +321,10 @@ export default function PagamentoPage() {
             <div className="mb-6 text-center">
               <Button
                 onClick={handleRealizarPagamento}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-lg rounded-none"
+                disabled={isGeneratingPix}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-lg rounded-none disabled:opacity-50"
               >
-                Realizar Pagamento
+                {isGeneratingPix ? 'Gerando PIX...' : 'Realizar Pagamento'}
               </Button>
             </div>
           )}
@@ -296,7 +341,15 @@ export default function PagamentoPage() {
               <CardContent>
                 <div className="text-center py-8">
                   <div className="w-48 h-48 bg-gray-100 mx-auto mb-4 flex items-center justify-center">
-                    <span className="text-gray-500">QR Code PIX</span>
+                    {qrCodeImage ? (
+                      <img 
+                        src={qrCodeImage} 
+                        alt="QR Code PIX" 
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <span className="text-gray-500">Gerando QR Code PIX...</span>
+                    )}
                   </div>
                   <p className="text-sm text-gray-600 mb-2">
                     Escaneie o QR Code com seu app bancário
