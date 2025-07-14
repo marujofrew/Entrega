@@ -67,11 +67,30 @@
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    height: 100%;
+  }
+  
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   
   /* Remove espaço abaixo do footer */
   footer {
     margin-bottom: 0 !important;
+    margin-top: auto;
+  }
+  
+  /* Garantir que páginas preencham toda altura */
+  .page-container {
+    min-height: calc(100vh - 80px); /* Subtraindo altura do header */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-content {
+    flex: 1;
   }
 }
 
