@@ -114,10 +114,10 @@ export default function RastreiosPage() {
 
   return (
     <MobileOnly>
-      <div className="bg-gray-50 flex flex-col">
+      <div className="bg-gray-50">
         <Header />
 
-        <main className="container mx-auto px-4 py-6 flex-1">
+        <main className="container mx-auto px-4 py-6">
           {/* Cabeçalho da página */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-800 mb-2">

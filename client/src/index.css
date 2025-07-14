@@ -67,19 +67,11 @@
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    height: 100%;
   }
   
   /* Remove espaço abaixo do footer */
   footer {
     margin-bottom: 0 !important;
-    padding-bottom: 0;
-  }
-  
-  /* Garantir que páginas terminem no footer */
-  #root {
-    display: flex;
-    flex-direction: column;
   }
 }
 
