@@ -333,10 +333,10 @@ Deseja continuar com PIX de demonstração para testes?
 
   return (
     <MobileOnly>
-      <div className="page-container bg-gray-50">
+      <div className="bg-gray-50">
         <Header />
 
-        <main className="main-content container mx-auto px-4 py-6">
+        <main className="container mx-auto px-4 py-6">
           {/* Cabeçalho */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-800">
