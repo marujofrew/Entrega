@@ -147,7 +147,7 @@ export default function RastreiosPage() {
             <img
               src={caixaPacImage}
               alt="Caixa PAC dos Correios"
-              className="w-full h-auto rounded-lg shadow-sm"
+              className="w-full h-auto shadow-sm"
             />
 
             {/* Nome do destinatário sobre a imagem */}
