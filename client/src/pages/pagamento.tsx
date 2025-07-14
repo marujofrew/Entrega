@@ -26,6 +26,15 @@ export default function PagamentoPage() {
     telefone: ''
   });
 
+  const [showEmailSuggestions, setShowEmailSuggestions] = useState(false);
+  const [emailSuggestions] = useState([
+    '@gmail.com',
+    '@hotmail.com',
+    '@outlook.com',
+    '@yahoo.com.br',
+    '@uol.com.br'
+  ]);
+
   // Preenche automaticamente nome e CPF quando os dados da consulta estão disponíveis
   useEffect(() => {
     if (ultimaConsulta?.data) {
@@ -38,6 +47,39 @@ export default function PagamentoPage() {
   }, [ultimaConsulta]);
 
   const valorTaxa = 15.00; // Taxa alfandegária fixa
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setDadosUsuario(prev => ({ ...prev, email: value }));
+    
+    // Mostra sugestões se o usuário digitou @ e não tem domínio completo
+    if (value.includes('@') && !value.includes('.')) {
+      setShowEmailSuggestions(true);
+    } else {
+      setShowEmailSuggestions(false);
+    }
+  };
+
+  const handleEmailSuggestionClick = (suggestion: string) => {
+    const userPart = dadosUsuario.email.split('@')[0];
+    setDadosUsuario(prev => ({ ...prev, email: userPart + suggestion }));
+    setShowEmailSuggestions(false);
+  };
+
+  // Fecha sugestões quando clica fora do campo
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.email-input-container')) {
+        setShowEmailSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,16 +154,30 @@ export default function PagamentoPage() {
                     required
                   />
                 </div>
-                <div>
+                <div className="relative email-input-container">
                   <Label htmlFor="email">E-mail</Label>
                   <Input
                     id="email"
                     type="email"
                     value={dadosUsuario.email}
-                    onChange={(e) => setDadosUsuario(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={handleEmailChange}
                     placeholder="seu@email.com"
                     required
                   />
+                  {showEmailSuggestions && (
+                    <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-10 mt-1">
+                      {emailSuggestions.map((suggestion, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => handleEmailSuggestionClick(suggestion)}
+                          className="w-full text-left px-3 py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none text-sm border-b border-gray-100 last:border-b-0"
+                        >
+                          {dadosUsuario.email.split('@')[0]}{suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <Label htmlFor="telefone">Telefone</Label>
