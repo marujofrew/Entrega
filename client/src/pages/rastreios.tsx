@@ -3,6 +3,7 @@ import Header from "@/components/tracking/Header";
 import Footer from "@/components/tracking/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
+import caixaPacImage from "@/assets/image_1752461563401.png";
 
 export default function RastreiosPage() {
   // Calcula data de amanhã para previsão de entrega
@@ -144,7 +145,7 @@ export default function RastreiosPage() {
           {/* Imagem da caixa PAC */}
           <div className="mb-6">
             <img 
-              src="@assets/image_1752461563401.png" 
+              src={caixaPacImage} 
               alt="Caixa PAC dos Correios"
               className="w-full h-auto rounded-lg shadow-sm"
             />
