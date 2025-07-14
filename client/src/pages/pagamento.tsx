@@ -66,6 +66,28 @@ export default function PagamentoPage() {
     setShowEmailSuggestions(false);
   };
 
+  const formatTelefone = (value: string) => {
+    // Remove todos os caracteres não numéricos
+    const numbers = value.replace(/\D/g, '');
+    
+    // Limita a 11 dígitos
+    const limitedNumbers = numbers.slice(0, 11);
+    
+    // Aplica formatação para celular brasileiro (11) 99999-9999
+    if (limitedNumbers.length <= 2) {
+      return limitedNumbers;
+    } else if (limitedNumbers.length <= 7) {
+      return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2)}`;
+    } else {
+      return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2, 7)}-${limitedNumbers.slice(7)}`;
+    }
+  };
+
+  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatTelefone(e.target.value);
+    setDadosUsuario(prev => ({ ...prev, telefone: formattedValue }));
+  };
+
   // Fecha sugestões quando clica fora do campo
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -185,8 +207,9 @@ export default function PagamentoPage() {
                     id="telefone"
                     type="tel"
                     value={dadosUsuario.telefone}
-                    onChange={(e) => setDadosUsuario(prev => ({ ...prev, telefone: e.target.value }))}
+                    onChange={handleTelefoneChange}
                     placeholder="(11) 99999-9999"
+                    maxLength={15}
                     required
                   />
                 </div>
