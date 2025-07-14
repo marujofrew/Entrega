@@ -152,7 +152,7 @@ export default function RastreiosPage() {
               />
 
               {/* Texto sobre a imagem - exemplo na área de previsão */}
-              <div className="absolute top-[40px] left-[100px] text-xs text-gray-700">
+              <div className="absolute top-[40px] left-[50px] text-xs text-gray-700">
                 <p className="font-medium">
                   Receber até dia {deliveryDate} após o pagamento
                 </p>
