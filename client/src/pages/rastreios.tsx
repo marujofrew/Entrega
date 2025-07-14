@@ -3,9 +3,12 @@ import Header from "@/components/tracking/Header";
 import Footer from "@/components/tracking/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import caixaPacImage from "@/assets/image_1752461563401.png";
 
 export default function RastreiosPage() {
+  const [, setLocation] = useLocation();
+  
   // Calcula data de amanhã para previsão de entrega
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -182,7 +185,10 @@ export default function RastreiosPage() {
 
           {/* Botão Regularizar Encomenda */}
           <div className="mb-6 text-center">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wide transition-colors">
+            <button 
+              onClick={() => setLocation('/pagamento')}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wide transition-colors"
+            >
               REGULARIZAR MINHA ENCOMENDA
             </button>
           </div>

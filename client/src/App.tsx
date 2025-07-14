@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import TrackingPage from "@/pages/tracking";
 import RastreiosPage from "@/pages/rastreios";
+import PagamentoPage from "@/pages/pagamento";
 import MobileOnly from "@/components/MobileOnly";
 
 function Router() {
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={TrackingPage} />
       <Route path="/rastreamento" component={TrackingPage} />
       <Route path="/rastreios" component={RastreiosPage} />
+      <Route path="/pagamento" component={PagamentoPage} />
       <Route component={NotFound} />
     </Switch>
   );
