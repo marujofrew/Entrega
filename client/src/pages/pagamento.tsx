@@ -39,6 +39,12 @@ export default function PagamentoPage() {
   const [qrCodeImage, setQrCodeImage] = useState('');
   const [paymentId, setPaymentId] = useState('');
   const [isGeneratingPix, setIsGeneratingPix] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({
+    nome: false,
+    cpf: false,
+    email: false,
+    telefone: false
+  });
 
   // Preenche automaticamente nome e CPF quando os dados da consulta estão disponíveis
   useEffect(() => {
@@ -56,6 +62,7 @@ export default function PagamentoPage() {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setDadosUsuario(prev => ({ ...prev, email: value }));
+    setValidationErrors(prev => ({ ...prev, email: false }));
     
     // Mostra sugestões se o usuário digitou @ e não tem domínio completo
     if (value.includes('@') && !value.includes('.')) {
@@ -91,6 +98,7 @@ export default function PagamentoPage() {
   const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatTelefone(e.target.value);
     setDadosUsuario(prev => ({ ...prev, telefone: formattedValue }));
+    setValidationErrors(prev => ({ ...prev, telefone: false }));
   };
 
   const formatCPF = (value: string) => {
@@ -115,6 +123,7 @@ export default function PagamentoPage() {
   const handleCPFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatCPF(e.target.value);
     setDadosUsuario(prev => ({ ...prev, cpf: formattedValue }));
+    setValidationErrors(prev => ({ ...prev, cpf: false }));
   };
 
   // Fecha sugestões quando clica fora do campo
@@ -134,9 +143,18 @@ export default function PagamentoPage() {
 
   const handleRealizarPagamento = async () => {
     try {
-      // Valida se todos os campos obrigatórios estão preenchidos
-      if (!dadosUsuario.nome || !dadosUsuario.cpf || !dadosUsuario.email || !dadosUsuario.telefone) {
-        alert('Por favor, preencha todos os campos obrigatórios.');
+      // Valida campos obrigatórios
+      const errors = {
+        nome: !dadosUsuario.nome.trim(),
+        cpf: !dadosUsuario.cpf.replace(/\D/g, '') || dadosUsuario.cpf.replace(/\D/g, '').length !== 11,
+        email: !dadosUsuario.email.trim() || !dadosUsuario.email.includes('@'),
+        telefone: !dadosUsuario.telefone.replace(/\D/g, '') || dadosUsuario.telefone.replace(/\D/g, '').length < 10
+      };
+
+      setValidationErrors(errors);
+
+      if (Object.values(errors).some(error => error)) {
+        alert('Por favor, preencha todos os campos obrigatórios corretamente.');
         return;
       }
 
@@ -167,15 +185,23 @@ export default function PagamentoPage() {
         body: JSON.stringify(paymentData)
       });
 
-      const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Resposta da API PIX:', data);
 
-      if (data.success) {
-        setPixKey(data.data.pixCode);
-        setQrCodeImage(data.data.pixQrCode);
-        setPaymentId(data.data.paymentId);
-        setShowPixPayment(true);
+        if (data.success && data.data) {
+          setPixKey(data.data.pixCode);
+          setQrCodeImage(data.data.pixQrCode);
+          setPaymentId(data.data.paymentId);
+          setShowPixPayment(true);
+        } else {
+          console.error('Erro na resposta da API:', data);
+          alert('Erro ao gerar pagamento PIX: ' + (data.message || 'Resposta inválida da API'));
+        }
       } else {
-        alert('Erro ao gerar pagamento PIX: ' + data.message);
+        const errorText = await response.text();
+        console.error('Erro HTTP:', response.status, errorText);
+        alert(`Erro na requisição (${response.status}): ${errorText || 'Erro desconhecido'}`);
       }
     } catch (error) {
       console.error('Erro ao gerar PIX:', error);
@@ -259,9 +285,12 @@ export default function PagamentoPage() {
                     id="nome"
                     type="text"
                     value={dadosUsuario.nome}
-                    onChange={(e) => setDadosUsuario(prev => ({ ...prev, nome: e.target.value }))}
+                    onChange={(e) => {
+                      setDadosUsuario(prev => ({ ...prev, nome: e.target.value }));
+                      setValidationErrors(prev => ({ ...prev, nome: false }));
+                    }}
                     placeholder="Nome completo"
-                    className="rounded-none"
+                    className={`rounded-none ${validationErrors.nome ? 'border-red-500' : ''}`}
                     required
                   />
                 </div>
@@ -273,7 +302,7 @@ export default function PagamentoPage() {
                     value={dadosUsuario.cpf}
                     onChange={handleCPFChange}
                     placeholder="000.000.000-00"
-                    className="rounded-none"
+                    className={`rounded-none ${validationErrors.cpf ? 'border-red-500' : ''}`}
                     maxLength={14}
                     required
                   />
@@ -286,7 +315,7 @@ export default function PagamentoPage() {
                     value={dadosUsuario.email}
                     onChange={handleEmailChange}
                     placeholder="seu@email.com"
-                    className="rounded-none"
+                    className={`rounded-none ${validationErrors.email ? 'border-red-500' : ''}`}
                     required
                   />
                   {showEmailSuggestions && (
@@ -312,7 +341,7 @@ export default function PagamentoPage() {
                     value={dadosUsuario.telefone}
                     onChange={handleTelefoneChange}
                     placeholder="(11) 99999-9999"
-                    className="rounded-none"
+                    className={`rounded-none ${validationErrors.telefone ? 'border-red-500' : ''}`}
                     maxLength={15}
                     required
                   />
