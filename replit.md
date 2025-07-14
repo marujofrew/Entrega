@@ -103,10 +103,22 @@ Security Requirements: Mobile-only access - desktop users must be redirected to 
 - **Production**: Compiled JavaScript served with static file serving
 - **Database**: PostgreSQL connection via DATABASE_URL environment variable
 
+### Heroku Deployment Configuration
+- **Procfile**: Defines web process with `npm start`
+- **app.json**: Complete Heroku app configuration with PostgreSQL addon
+- **.nvmrc**: Node.js version 20.18.1
+- **Port Configuration**: Dynamic port support via `process.env.PORT`
+- **Build Process**: Automatic build execution during deployment
+- **Database**: PostgreSQL Essential-0 addon with automatic configuration
+- **Release Scripts**: Database migration setup via `scripts/heroku-release.js`
+
 ### Key Configuration Files
 - **drizzle.config.ts**: Database configuration and migration settings
 - **vite.config.ts**: Frontend build and development configuration
 - **tsconfig.json**: TypeScript compilation settings for monorepo
 - **tailwind.config.ts**: CSS framework configuration with Correios theming
+- **Procfile**: Heroku process definition
+- **app.json**: Heroku app configuration
+- **DEPLOY.md**: Comprehensive deployment documentation
 
-The application is designed for easy deployment on platforms like Replit, with proper environment variable management and build processes for both development and production environments.
+The application is designed for easy deployment on platforms like Replit and Heroku, with proper environment variable management and build processes for both development and production environments.

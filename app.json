@@ -1,0 +1,36 @@
+{
+  "name": "correios-tracking-app",
+  "description": "Aplicação de rastreamento de pacotes dos Correios com integração PIX",
+  "repository": "https://github.com/user/correios-tracking-app",
+  "keywords": ["correios", "tracking", "pix", "nodejs", "react"],
+  "success_url": "/",
+  "env": {
+    "NODE_ENV": {
+      "description": "Environment mode",
+      "value": "production"
+    },
+    "DATABASE_URL": {
+      "description": "PostgreSQL database URL",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "node scripts/heroku-release.js"
+  }
+}
