@@ -88,6 +88,30 @@ export default function PagamentoPage() {
     setDadosUsuario(prev => ({ ...prev, telefone: formattedValue }));
   };
 
+  const formatCPF = (value: string) => {
+    // Remove todos os caracteres não numéricos
+    const numbers = value.replace(/\D/g, '');
+    
+    // Limita a 11 dígitos
+    const limitedNumbers = numbers.slice(0, 11);
+    
+    // Aplica formatação XXX.XXX.XXX-XX
+    if (limitedNumbers.length <= 3) {
+      return limitedNumbers;
+    } else if (limitedNumbers.length <= 6) {
+      return `${limitedNumbers.slice(0, 3)}.${limitedNumbers.slice(3)}`;
+    } else if (limitedNumbers.length <= 9) {
+      return `${limitedNumbers.slice(0, 3)}.${limitedNumbers.slice(3, 6)}.${limitedNumbers.slice(6)}`;
+    } else {
+      return `${limitedNumbers.slice(0, 3)}.${limitedNumbers.slice(3, 6)}.${limitedNumbers.slice(6, 9)}-${limitedNumbers.slice(9)}`;
+    }
+  };
+
+  const handleCPFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatCPF(e.target.value);
+    setDadosUsuario(prev => ({ ...prev, cpf: formattedValue }));
+  };
+
   // Fecha sugestões quando clica fora do campo
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -171,8 +195,9 @@ export default function PagamentoPage() {
                     id="cpf"
                     type="text"
                     value={dadosUsuario.cpf}
-                    onChange={(e) => setDadosUsuario(prev => ({ ...prev, cpf: e.target.value }))}
+                    onChange={handleCPFChange}
                     placeholder="000.000.000-00"
+                    maxLength={14}
                     required
                   />
                 </div>
