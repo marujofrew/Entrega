@@ -144,21 +144,25 @@ export default function RastreiosPage() {
 
           {/* Imagem da caixa PAC */}
           <div className="mb-6 relative">
-            <img 
-              src={caixaPacImage} 
+            <img
+              src={caixaPacImage}
               alt="Caixa PAC dos Correios"
               className="w-full h-auto rounded-lg shadow-sm"
             />
-            
+
             {/* Nome do destinatário sobre a imagem */}
-            <div className="absolute top-[190px] left-[70px] text-sm text-black leading-tight">
+            <div className="absolute top-[190px] left-[75px] text-sm text-black leading-tight">
               {(() => {
                 const nomeCompleto = userData.nome.toUpperCase();
-                const palavras = nomeCompleto.split(' ');
-                
+                const palavras = nomeCompleto.split(" ");
+
                 if (palavras.length > 3) {
-                  const primeiraLinha = palavras.slice(0, Math.ceil(palavras.length / 2)).join(' ');
-                  const segundaLinha = palavras.slice(Math.ceil(palavras.length / 2)).join(' ');
+                  const primeiraLinha = palavras
+                    .slice(0, Math.ceil(palavras.length / 2))
+                    .join(" ");
+                  const segundaLinha = palavras
+                    .slice(Math.ceil(palavras.length / 2))
+                    .join(" ");
                   return (
                     <>
                       <div>{primeiraLinha}</div>
@@ -168,6 +172,11 @@ export default function RastreiosPage() {
                 }
                 return nomeCompleto;
               })()}
+            </div>
+            
+            {/* CPF do destinatário sobre a imagem */}
+            <div className="absolute top-[270px] left-[70px] text-sm text-black">
+              {userData.cpf}
             </div>
           </div>
 
