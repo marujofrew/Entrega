@@ -164,16 +164,40 @@ export default function PagamentoPage() {
       const cpfLimpo = dadosUsuario.cpf.replace(/\D/g, '');
       const telefoneLimpo = dadosUsuario.telefone.replace(/\D/g, '');
 
-      // Dados para envio na API
+      // Dados para envio na API - garantindo que todos os campos obrigatórios estão presentes
       const paymentData = {
-        name: dadosUsuario.nome,
-        email: dadosUsuario.email,
+        name: dadosUsuario.nome.trim(),
+        email: dadosUsuario.email.trim().toLowerCase(),
         cpf: cpfLimpo,
         phone: telefoneLimpo,
-        amount: valorTaxa
+        amount: Number(valorTaxa)
       };
 
-      console.log('Enviando dados para API:', paymentData);
+      // Validação adicional dos dados antes do envio
+      if (!paymentData.name || paymentData.name.length < 2) {
+        alert('Nome deve ter pelo menos 2 caracteres');
+        return;
+      }
+      if (!paymentData.email || !paymentData.email.includes('@') || !paymentData.email.includes('.')) {
+        alert('Email inválido');
+        return;
+      }
+      if (!paymentData.cpf || paymentData.cpf.length !== 11) {
+        alert('CPF deve ter exatamente 11 dígitos');
+        return;
+      }
+      if (!paymentData.phone || paymentData.phone.length < 10) {
+        alert('Telefone deve ter pelo menos 10 dígitos');
+        return;
+      }
+
+      console.log('=== INICIANDO REQUISIÇÃO PIX ===');
+      console.log('URL:', 'https://elite-manager-api-62571bbe8e96.herokuapp.com/api/payments/for4payments/pix/generate');
+      console.log('Headers:', {
+        'Content-Type': 'application/json',
+        'x-api-key': '3d6bd4c17dd31877b77482b341c74d32494a1d6fbdee4c239cf8432b424b1abf'
+      });
+      console.log('Dados enviados:', paymentData);
 
       // Gera pagamento PIX via For4Payments
       const response = await fetch('https://elite-manager-api-62571bbe8e96.herokuapp.com/api/payments/for4payments/pix/generate', {
@@ -184,6 +208,9 @@ export default function PagamentoPage() {
         },
         body: JSON.stringify(paymentData)
       });
+
+      console.log('Status da resposta:', response.status);
+      console.log('Headers da resposta:', Object.fromEntries(response.headers.entries()));
 
       if (response.ok) {
         const data = await response.json();
@@ -201,11 +228,58 @@ export default function PagamentoPage() {
       } else {
         const errorText = await response.text();
         console.error('Erro HTTP:', response.status, errorText);
-        alert(`Erro na requisição (${response.status}): ${errorText || 'Erro desconhecido'}`);
+        
+        // Parse do JSON de erro se possível
+        try {
+          const errorData = JSON.parse(errorText);
+          console.error('Detalhes do erro:', errorData);
+          
+          // Verificar se é um erro específico do servidor For4Payments
+          if (response.status === 500 && errorData.message === "Erro ao gerar pagamento PIX") {
+            alert(`ERRO NA API FOR4PAYMENTS (Status ${response.status}): 
+            
+${errorData.message}
+Detalhes: ${errorData.error}
+
+Por favor, verifique se:
+1. A API For4Payments está funcionando
+2. Os dados enviados estão corretos
+3. As credenciais estão válidas
+
+Dados enviados:
+- Nome: ${paymentData.name}
+- Email: ${paymentData.email} 
+- CPF: ${paymentData.cpf}
+- Telefone: ${paymentData.phone}
+- Valor: ${paymentData.amount}`);
+          } else {
+            alert(`Erro na API (${response.status}): ${errorData.message || errorText}`);
+          }
+        } catch {
+          alert(`Erro na requisição (${response.status}): ${errorText || 'Erro desconhecido'}`);
+        }
       }
     } catch (error) {
       console.error('Erro ao gerar PIX:', error);
-      alert('Erro ao conectar com o sistema de pagamentos. Tente novamente.');
+      
+      // Para fins de demonstração, gerar PIX fictício quando a API falhar
+      const usarPixDemo = confirm(`Erro ao conectar com For4Payments API.
+
+Deseja continuar com PIX de demonstração para testes?
+(Clique "OK" para PIX demo ou "Cancelar" para tentar novamente)`);
+      
+      if (usarPixDemo) {
+        // Simular resposta da API para demonstração
+        const pixDemo = `00020101021226800014BR.GOV.BCB.PIX013632c38aba-15aa-4e69-a2bc-73faacbc9b5d5204000053039865802BR5915CORREIOS BRASIL6009SAO PAULO6207051863040`; 
+        const qrCodeDemo = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`;
+        
+        setPixKey(pixDemo);
+        setQrCodeImage(qrCodeDemo);
+        setPaymentId('demo-' + Date.now());
+        setShowPixPayment(true);
+        
+        alert('⚠️ MODO DEMONSTRAÇÃO ⚠️\nPIX gerado para teste apenas!\nNão efetue pagamento real.');
+      }
     } finally {
       setIsGeneratingPix(false);
     }
