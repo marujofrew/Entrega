@@ -151,7 +151,7 @@ export default function PagamentoPage() {
           </div>
 
           {/* Resumo do pagamento */}
-          <Card className="mb-6">
+          <Card className="mb-6 rounded-none">
             <CardHeader>
               <CardTitle className="text-lg">Resumo do Pagamento</CardTitle>
             </CardHeader>
@@ -184,7 +184,7 @@ export default function PagamentoPage() {
           </Card>
 
           {/* Dados do Usuário */}
-          <Card className="mb-6">
+          <Card className="mb-6 rounded-none">
             <CardHeader>
               <CardTitle className="text-lg">Confirme seus dados</CardTitle>
             </CardHeader>
@@ -198,6 +198,7 @@ export default function PagamentoPage() {
                     value={dadosUsuario.nome}
                     onChange={(e) => setDadosUsuario(prev => ({ ...prev, nome: e.target.value }))}
                     placeholder="Nome completo"
+                    className="rounded-none"
                     required
                   />
                 </div>
@@ -209,6 +210,7 @@ export default function PagamentoPage() {
                     value={dadosUsuario.cpf}
                     onChange={handleCPFChange}
                     placeholder="000.000.000-00"
+                    className="rounded-none"
                     maxLength={14}
                     required
                   />
@@ -221,10 +223,11 @@ export default function PagamentoPage() {
                     value={dadosUsuario.email}
                     onChange={handleEmailChange}
                     placeholder="seu@email.com"
+                    className="rounded-none"
                     required
                   />
                   {showEmailSuggestions && (
-                    <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-10 mt-1">
+                    <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 shadow-lg z-10 mt-1">
                       {emailSuggestions.map((suggestion, index) => (
                         <button
                           key={index}
@@ -246,6 +249,7 @@ export default function PagamentoPage() {
                     value={dadosUsuario.telefone}
                     onChange={handleTelefoneChange}
                     placeholder="(11) 99999-9999"
+                    className="rounded-none"
                     maxLength={15}
                     required
                   />
@@ -255,7 +259,7 @@ export default function PagamentoPage() {
           </Card>
 
           {/* Pagamento PIX */}
-          <Card className="mb-6">
+          <Card className="mb-6 rounded-none">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Smartphone className="h-6 w-6" />
@@ -265,7 +269,7 @@ export default function PagamentoPage() {
             <CardContent>
               <form onSubmit={handleSubmit}>
                 <div className="text-center py-8">
-                  <div className="w-48 h-48 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                  <div className="w-48 h-48 bg-gray-100 mx-auto mb-4 flex items-center justify-center">
                     <span className="text-gray-500">QR Code PIX</span>
                   </div>
                   <p className="text-sm text-gray-600 mb-2">
@@ -276,7 +280,7 @@ export default function PagamentoPage() {
                   </p>
                   <Button
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-lg"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-lg rounded-none"
                   >
                     Confirmar Pagamento PIX
                   </Button>
@@ -286,7 +290,7 @@ export default function PagamentoPage() {
           </Card>
 
           {/* Informações importantes */}
-          <Card>
+          <Card className="rounded-none">
             <CardHeader>
               <CardTitle className="text-lg">Informações Importantes</CardTitle>
             </CardHeader>
