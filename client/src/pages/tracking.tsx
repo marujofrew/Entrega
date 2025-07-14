@@ -5,7 +5,7 @@ import Footer from "@/components/tracking/Footer";
 
 export default function TrackingPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
       {/* Header */}
       <Header />
 
