@@ -32,5 +32,10 @@
   ],
   "scripts": {
     "postdeploy": "node scripts/heroku-release.js"
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
   }
 }
